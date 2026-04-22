@@ -4,8 +4,21 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CS2 Case Simulator</title>
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
 <style>
+/* ── DROP TICKER ── */
+#dropTicker{position:fixed;top:0;left:0;right:0;height:36px;background:rgba(8,9,13,.96);border-bottom:1px solid rgba(228,174,57,.2);z-index:9100;display:flex;align-items:center;overflow:hidden;backdrop-filter:blur(8px)}
+#dropTicker.hidden{display:none}
+.ticker-inner{display:flex;gap:0;white-space:nowrap;animation:tickerScroll 40s linear infinite}
+@keyframes tickerScroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.ticker-item{display:inline-flex;align-items:center;gap:8px;padding:0 24px;font-size:12px;border-right:1px solid var(--border)}
+.ticker-item .ti-user{color:var(--accent);font-weight:700}
+.ticker-item .ti-skin{color:#fff;font-weight:600}
+.ticker-item .ti-price{font-family:Orbitron,monospace;font-size:11px;font-weight:700}
+.ticker-lbl{flex-shrink:0;font-size:10px;font-family:Orbitron,monospace;color:var(--text2);letter-spacing:1px;padding:0 12px;border-right:1px solid var(--border)}
 :root{
   --bg:#08090d;--bg2:#0f1118;--bg3:#171b24;--bg4:#1e2330;
   --accent:#e4ae39;--accent2:#f5c842;
@@ -32,7 +45,8 @@ html,body{min-height:100vh;background:var(--bg);color:var(--text);font-family:'R
 .login-hint{margin-top:16px;font-size:13px;color:var(--text2);line-height:1.6}
 
 /* ── HEADER ── */
-.header{background:rgba(8,9,13,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 20px;display:flex;align-items:center;justify-content:space-between;height:60px;position:sticky;top:0;z-index:200}
+.header{background:rgba(8,9,13,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 20px;display:flex;align-items:center;justify-content:space-between;height:60px;position:sticky;top:36px;z-index:200}
+/* admin tab only visible for PawPaw69 - controlled by JS */
 .logo{font-family:'Orbitron',monospace;font-weight:900;font-size:18px;color:var(--accent);letter-spacing:2px;text-shadow:0 0 20px rgba(228,174,57,.35)}
 .logo span{color:#fff}
 .hdr-right{display:flex;align-items:center;gap:12px}
@@ -296,14 +310,31 @@ html,body{min-height:100vh;background:var(--bg);color:var(--text);font-family:'R
 </head>
 <body>
 
+<!-- DROP TICKER -->
+<div id="dropTicker">
+  <div class="ticker-lbl">🔥 ДРОП</div>
+  <div class="ticker-inner" id="tickerInner">
+    <span class="ticker-item"><span class="ti-user">—</span><span class="ti-skin">Загрузка...</span></span>
+    <span class="ticker-item"><span class="ti-user">—</span><span class="ti-skin">Загрузка...</span></span>
+  </div>
+</div>
+
 <!-- LOGIN SCREEN -->
-<div id="loginScreen">
+<div id="loginScreen" style="padding-top:36px">
   <div class="login-box">
     <div class="login-logo">CS2<span>CASES</span></div>
     <div class="login-sub">СИМУЛЯТОР КЕЙСОВ</div>
-    <input class="login-input" id="loginInput" type="text" placeholder="ВАШ НИК" maxlength="24" autocomplete="off" spellcheck="false">
-    <button class="login-btn" onclick="doLogin()">ВОЙТИ / СОЗДАТЬ</button>
-    <div class="login-hint">Введите ник → войдёте или создадите аккаунт.<br>Прогресс сохраняется в браузере.</div>
+    <input class="login-input" id="loginInput" type="text" placeholder="НИК (мин. 3 символа)" maxlength="24" autocomplete="off" spellcheck="false">
+    <input class="login-input" id="loginPass" type="password" placeholder="ПАРОЛЬ (мин. 6 символов)" maxlength="64" autocomplete="current-password">
+    <div id="loginPassHint" style="font-size:11px;color:var(--text2);text-align:left;margin:-8px 0 10px;line-height:1.6;display:none">
+      Пароль должен содержать:<br>
+      <span id="phLen" style="color:var(--red)">✗ Минимум 6 символов</span><br>
+      <span id="phNum" style="color:var(--red)">✗ Минимум 1 цифра</span><br>
+      <span id="phUpper" style="color:var(--red)">✗ Минимум 1 заглавная буква</span>
+    </div>
+    <button class="login-btn" onclick="doLogin()">ВОЙТИ / ЗАРЕГИСТРИРОВАТЬСЯ</button>
+    <div class="login-hint">Новый ник = регистрация · Существующий = вход<br>Данные синхронизируются между всеми игроками</div>
+    <div id="loginError" style="margin-top:12px;color:var(--red);font-size:13px;display:none"></div>
   </div>
 </div>
 
@@ -609,8 +640,8 @@ html,body{min-height:100vh;background:var(--bg);color:var(--text);font-family:'R
     </div>
     <div class="result-grid" id="resultGrid"></div>
     <div class="result-actions" id="resultActions">
-      <button class="btn btn-green" onclick="sellAllResults()">💰 Продать всё</button>
-      <button class="btn btn-ghost" onclick="keepAll()">📦 В инвентарь</button>
+      <button class="btn btn-red" onclick="sellAllResultsFromInv()">💰 Продать все выпавшие</button>
+      <button class="btn btn-ghost" onclick="closeModal()">📦 Закрыть (в инвентаре)</button>
       <button class="btn btn-ghost" onclick="openCase()">🔄 Ещё раз</button>
     </div>
   </div>
@@ -1133,39 +1164,170 @@ const CASES = [
 ];
 
 // ═══════════════════════════════════════
-//  USER DATABASE (localStorage)
+//  FIREBASE — Shared Database
 // ═══════════════════════════════════════
+const FB_CONFIG = {
+  apiKey: "AIzaSyDemo-ReplaceWithYourKey",
+  authDomain: "cs2cases-demo.firebaseapp.com",
+  databaseURL: "https://cs2cases-demo-default-rtdb.firebaseio.com",
+  projectId: "cs2cases-demo",
+};
+// NOTE: Replace FB_CONFIG with your real Firebase project values.
+// Free tier is enough for hundreds of users. See README.
+
+let fbApp = null, fbDb = null, fbUsersRef = null, fbDropsRef = null;
+let useFirebase = false;
+
+function initFirebase() {
+  try {
+    if(typeof firebase === 'undefined') { console.warn('Firebase not loaded, using localStorage'); return; }
+    fbApp = firebase.initializeApp(FB_CONFIG);
+    fbDb = firebase.database();
+    fbUsersRef = fbDb.ref('users');
+    fbDropsRef = fbDb.ref('drops');
+    useFirebase = true;
+    // Listen for real-time drops
+    fbDropsRef.limitToLast(30).on('value', snap => {
+      const drops = [];
+      snap.forEach(c => drops.push(c.val()));
+      renderDropTicker(drops.reverse());
+    });
+    console.log('Firebase connected');
+  } catch(e) {
+    console.warn('Firebase init failed, using localStorage:', e.message);
+    useFirebase = false;
+  }
+}
+
+// Simple password hash (djb2 — not cryptographic, but stops casual snooping)
+function hashPass(s) {
+  let h = 5381;
+  for(let i=0;i<s.length;i++) h = ((h<<5)+h)^s.charCodeAt(i);
+  return (h>>>0).toString(36);
+}
+
+// ─── localStorage fallback ───
 let DB = {};
+function loadDB() { try { DB = JSON.parse(localStorage.getItem('cs2db')||'{}'); } catch(e){DB={};} }
+function saveDB() { localStorage.setItem('cs2db', JSON.stringify(DB)); }
+
 let currentUser = null;
 
-function loadDB() {
-  try { DB = JSON.parse(localStorage.getItem('cs2db') || '{}'); } catch(e) { DB = {}; }
-}
-function saveDB() {
-  localStorage.setItem('cs2db', JSON.stringify(DB));
-}
-function getUser(name) { return DB[name] || null; }
-function createUser(name) {
-  DB[name] = {name, balance:0, inventory:[], wheelSpins:3, lastWheelDate:'', freeCases:[], dailyClicks:0, lastClickDate:'', created:Date.now()};
-  saveDB();
-  return DB[name];
-}
-function saveUser() {
-  if(!currentUser) return;
-  DB[currentUser.name] = currentUser;
-  saveDB();
+async function fbSave(user) {
+  const data = JSON.parse(JSON.stringify(user)); // deep clone
+  if(useFirebase) {
+    try { await fbUsersRef.child(user.name).set(data); } catch(e) { console.warn('FB save err',e); }
+  }
+  DB[user.name] = data; saveDB();
 }
 
-function doLogin() {
+async function fbLoad(name) {
+  if(useFirebase) {
+    try {
+      const snap = await fbUsersRef.child(name).once('value');
+      if(snap.exists()) {
+        const data = snap.val();
+        DB[name] = data; saveDB(); return data;
+      }
+    } catch(e) { console.warn('FB load err',e); }
+  }
+  loadDB(); return DB[name] || null;
+}
+
+async function fbDropAnnounce(userName, skin) {
+  const drop = {
+    user: userName, weapon: skin.weapon, name: skin.skin,
+    rarity: skin.rarity, price: skin.price, wear: skin.wearShort,
+    ts: Date.now()
+  };
+  if(useFirebase) {
+    try { await fbDropsRef.push(drop); } catch(e){}
+  } else {
+    // local ticker fallback — store last 20 in localStorage
+    let localDrops = [];
+    try { localDrops = JSON.parse(localStorage.getItem('cs2drops')||'[]'); } catch(e){}
+    localDrops.unshift(drop);
+    localDrops = localDrops.slice(0,20);
+    localStorage.setItem('cs2drops', JSON.stringify(localDrops));
+    renderDropTicker(localDrops);
+  }
+}
+
+function saveUser() {
+  if(!currentUser) return;
+  fbSave(currentUser); // async fire-and-forget
+}
+
+// ─── LOGIN ───
+function showLoginError(msg) {
+  const el = document.getElementById('loginError');
+  el.textContent = msg; el.style.display = 'block';
+}
+function hideLoginError() {
+  document.getElementById('loginError').style.display = 'none';
+}
+
+function validatePassword(pass) {
+  const errors = [];
+  if(pass.length < 6) errors.push('мин. 6 символов');
+  if(!/\d/.test(pass)) errors.push('мин. 1 цифра');
+  if(!/[A-ZА-Я]/.test(pass)) errors.push('мин. 1 заглавная буква');
+  return errors;
+}
+
+// Live password hints
+document.getElementById('loginPass').addEventListener('input', () => {
+  const pass = document.getElementById('loginPass').value;
+  const hint = document.getElementById('loginPassHint');
+  hint.style.display = pass.length > 0 ? 'block' : 'none';
+  const ok = c => c ? 'var(--green)' : 'var(--red)';
+  const sym = c => c ? '✓' : '✗';
+  document.getElementById('phLen').style.color = ok(pass.length>=6);
+  document.getElementById('phLen').textContent = sym(pass.length>=6)+' Минимум 6 символов';
+  document.getElementById('phNum').style.color = ok(/\d/.test(pass));
+  document.getElementById('phNum').textContent = sym(/\d/.test(pass))+' Минимум 1 цифра';
+  document.getElementById('phUpper').style.color = ok(/[A-ZА-Я]/.test(pass));
+  document.getElementById('phUpper').textContent = sym(/[A-ZА-Я]/.test(pass))+' Минимум 1 заглавная буква';
+});
+
+async function doLogin() {
+  hideLoginError();
   const name = document.getElementById('loginInput').value.trim();
-  if(!name || name.length < 2) { toast('Введите ник (мин. 2 символа)','error'); return; }
-  loadDB();
-  let u = getUser(name);
-  if(!u) u = createUser(name);
+  const pass = document.getElementById('loginPass').value;
+  if(!name || name.length < 3) { showLoginError('Ник должен быть минимум 3 символа'); return; }
+  const passErrors = validatePassword(pass);
+  if(passErrors.length) { showLoginError('Пароль: ' + passErrors.join(', ')); return; }
+
+  const btn = document.querySelector('.login-btn');
+  btn.textContent = 'ЗАГРУЗКА...'; btn.disabled = true;
+
+  const passHash = hashPass(pass);
+  let u = await fbLoad(name);
+
+  if(!u) {
+    // Register new user
+    u = {name, passHash, balance:0, inventory:[], wheelSpins:3, lastWheelDate:'',
+         freeCases:[], dailyClicks:0, lastClickDate:'', created:Date.now()};
+    await fbSave(u);
+    toast('Аккаунт создан! Добро пожаловать, ' + name, 'success');
+  } else {
+    // Existing user — check password
+    if(u.passHash && u.passHash !== passHash) {
+      btn.textContent = 'ВОЙТИ / ЗАРЕГИСТРИРОВАТЬСЯ'; btn.disabled = false;
+      showLoginError('Неверный пароль');
+      return;
+    }
+    // If old account has no passHash, set it now
+    if(!u.passHash) { u.passHash = passHash; await fbSave(u); }
+    toast('Добро пожаловать обратно, ' + name + '!', 'gold');
+  }
+
+  btn.textContent = 'ВОЙТИ / ЗАРЕГИСТРИРОВАТЬСЯ'; btn.disabled = false;
   currentUser = u;
   document.getElementById('userLabel').textContent = name;
   document.getElementById('loginScreen').style.display = 'none';
   document.getElementById('app').style.display = 'block';
+  document.getElementById('loginPassHint').style.display = 'none';
   updateBalance();
   renderCases();
   renderInv();
@@ -1176,6 +1338,13 @@ function doLogin() {
   initUpgrade();
   initAdmin();
   updateClickBtn();
+  // Load local drops for ticker if no firebase
+  if(!useFirebase) {
+    try {
+      const ld = JSON.parse(localStorage.getItem('cs2drops')||'[]');
+      renderDropTicker(ld);
+    } catch(e){}
+  }
 }
 
 function logout() {
@@ -1183,13 +1352,42 @@ function logout() {
   saveUser();
   currentUser = null;
   document.getElementById('loginInput').value = '';
+  document.getElementById('loginPass').value = '';
   document.getElementById('loginScreen').style.display = 'flex';
   document.getElementById('app').style.display = 'none';
+  // CRITICAL: always hide admin tab on logout
+  document.getElementById('adminTab').style.display = 'none';
+  // Reset nav to cases
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.querySelector('[data-page="cases"]').classList.add('active');
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-cases').classList.add('active');
   if(crashIntervalId) clearInterval(crashIntervalId);
   if(crashBettingTimer) clearTimeout(crashBettingTimer);
 }
 
-document.getElementById('loginInput').addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
+document.getElementById('loginInput').addEventListener('keydown', e => { if(e.key==='Enter') document.getElementById('loginPass').focus(); });
+document.getElementById('loginPass').addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
+
+// ─── DROP TICKER ───
+function renderDropTicker(drops) {
+  const inner = document.getElementById('tickerInner');
+  if(!drops || !drops.length) return;
+  const rcColors = {consumer:'#b0c3d9',industrial:'#5e98d9',milspec:'#4b69ff',restricted:'#8847ff',classified:'#d32ce6',covert:'#eb4b4b',gold:'#e4ae39'};
+  // Duplicate for seamless scroll
+  const items = [...drops, ...drops].map(d =>
+    `<span class="ticker-item">
+      <span class="ti-user">👤 ${d.user}</span>
+      <span style="color:var(--text2)">выбил</span>
+      <span class="ti-skin" style="color:${rcColors[d.rarity]||'#fff'}">${d.weapon} | ${d.name}</span>
+      <span class="ti-price" style="color:${rcColors[d.rarity]||'#fff'}">$${(+d.price).toFixed(2)}</span>
+      <span style="font-size:10px;color:var(--text2)">${d.wear||''}</span>
+    </span>`
+  ).join('');
+  inner.innerHTML = items;
+  // Adjust animation speed based on item count
+  inner.style.animationDuration = Math.max(20, drops.length * 4) + 's';
+}
 
 // ═══════════════════════════════════════
 //  BALANCE
@@ -1399,18 +1597,52 @@ function spawnParticles(rarity) {
 function showResults() {
   const grid=document.getElementById('resultGrid');
   grid.innerHTML=''; grid.classList.add('active');
-  resultItems.forEach((item,idx)=>{
+
+  // AUTO-ADD all items to inventory immediately
+  resultItems.forEach(item => {
+    if(!item.inInventory) {
+      item.inInventory = true;
+      item.invIdx = currentUser.inventory.length;
+      currentUser.inventory.push(item);
+    }
+  });
+  saveUser();
+  renderInv();
+
+  // Announce notable drops to ticker (restricted+ or price > $5)
+  resultItems.forEach(item => {
+    if(['restricted','classified','covert','gold'].includes(item.rarity) || item.price >= 5) {
+      fbDropAnnounce(currentUser.name, item);
+    }
+  });
+
+  resultItems.forEach((item)=>{
     const div=document.createElement('div');
     div.className=`result-item rc-${item.rarity}`;
-    div.style.animationDelay=`${idx*.08}s`;
+    div.style.animationDelay=`${resultItems.indexOf(item)*.08}s`;
     if(item.rarity==='gold') div.style.boxShadow='0 0 25px rgba(228,174,57,.3)';
     if(item.rarity==='covert') div.style.boxShadow='0 0 25px rgba(235,75,75,.3)';
     const imgSrc=imgOrSVG(item.weapon,item.skin,item.rarity);
-    div.innerHTML=`<img src="${imgSrc}" alt="${item.skin}" onerror="this.src='${skinSVG(item.weapon,item.skin,item.rarity)}'"><div class="ri-weapon">${item.weapon}</div><div class="ri-name-full">${item.skin}</div><div class="ri-wear-full">${item.wear} (${item.float})</div><div class="ri-price">$${item.price.toFixed(2)}</div><button class="btn-sell-item" onclick="sellResultItem(${idx},this)">Продать $${item.price.toFixed(2)}</button>`;
+    // Find current inventory index (item is already in inventory)
+    const invIdx = currentUser.inventory.lastIndexOf(item);
+    div.innerHTML=`<img src="${imgSrc}" alt="${item.skin}" onerror="this.src='${skinSVG(item.weapon,item.skin,item.rarity)}'"><div class="ri-weapon">${item.weapon}</div><div class="ri-name-full">${item.skin}</div><div class="ri-wear-full">${item.wear} (${item.float})</div><div class="ri-price">$${item.price.toFixed(2)}</div>
+    <div style="font-size:10px;color:var(--green);margin-top:2px">✓ В инвентаре</div>
+    <button class="btn-sell-item" onclick="sellResultItemFromInv(this,${invIdx})">Продать $${item.price.toFixed(2)}</button>`;
     grid.appendChild(div);
   });
   document.getElementById('resultActions').classList.add('active');
   isOpening=false;
+}
+
+function sellResultItemFromInv(btn, invIdx) {
+  const item = currentUser.inventory[invIdx];
+  if(!item) { btn.textContent='✓ Уже продан'; btn.disabled=true; return; }
+  currentUser.balance=+(currentUser.balance+item.price).toFixed(2);
+  currentUser.inventory.splice(invIdx,1);
+  updateBalance(); saveUser(); renderInv();
+  btn.textContent='✓ Продано'; btn.disabled=true; btn.style.opacity='.5';
+  // Update other buttons in the results panel (indices shifted)
+  toast(`Продано: ${item.skin} · $${item.price.toFixed(2)}`,'success');
 }
 
 function sellResultItem(idx,btn) {
