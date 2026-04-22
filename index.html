@@ -228,9 +228,9 @@ html,body{min-height:100vh;background:var(--bg);color:var(--text);font-family:'R
 .wheel-spin-btn{padding:14px 40px;border-radius:10px;border:none;background:linear-gradient(135deg,var(--accent),#c8922a);color:#000;font-family:'Orbitron',monospace;font-size:16px;font-weight:700;cursor:pointer;transition:all .2s;letter-spacing:1px}
 .wheel-spin-btn:hover{box-shadow:0 0 24px rgba(228,174,57,.45);transform:translateY(-2px)}
 .wheel-spin-btn:disabled{opacity:.4;cursor:not-allowed;transform:none;box-shadow:none}
-.wheel-result-box{background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:16px 24px;text-align:center;min-width:200px}
-.wheel-result-box h3{font-family:'Orbitron',monospace;font-size:13px;color:var(--accent);margin-bottom:8px}
-.wheel-result-val{font-size:16px;color:#fff;font-weight:700}
+.wheel-result-box{background:var(--bg2);border:2px solid var(--accent);border-radius:14px;padding:20px 28px;text-align:center;min-width:240px;box-shadow:0 0 30px rgba(228,174,57,.2)}
+.wheel-result-box h3{font-family:'Orbitron',monospace;font-size:12px;color:var(--accent);margin-bottom:10px;letter-spacing:1px}
+.wheel-result-val{font-size:15px;color:#fff;font-weight:700;line-height:1.5}
 
 /* ── TOAST ── */
 .toast-wrap{position:fixed;bottom:20px;right:20px;z-index:9999;display:flex;flex-direction:column;gap:6px}
@@ -312,7 +312,7 @@ html,body{min-height:100vh;background:var(--bg);color:var(--text);font-family:'R
 <div class="header">
   <div class="logo">CS2<span>CASES</span></div>
   <div class="hdr-right">
-    <button class="add1-btn" onclick="addFunds(1)">+$1</button>
+    <button class="add1-btn" id="add1Btn" onclick="addFunds(1)">+$1 (50)</button>
     <div class="balance-wrap">
       <span class="balance-lbl">БАЛАНС</span>
       <span class="balance-val" id="balanceDisplay">$0.00</span>
@@ -446,9 +446,14 @@ html,body{min-height:100vh;background:var(--bg);color:var(--text);font-family:'R
 
 <!-- WHEEL -->
 <div class="page" id="page-wheel">
-  <div class="section-title" style="margin-bottom:6px">КОЛЕСО <span>ФОРТУНЫ</span></div>
-  <div class="wheel-spin-wrap">
-    <div class="wheel-spins-left">Попыток сегодня: <span id="spinsLeftDisplay">0</span></div>
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+    <div class="section-title" style="margin-bottom:0">КОЛЕСО <span>ФОРТУНЫ</span></div>
+    <div style="font-size:13px;color:var(--text2)">Попыток: <span id="spinsLeftDisplay" style="color:var(--accent);font-weight:700;font-family:Orbitron,monospace">0</span></div>
+  </div>
+  <!-- Free cases pending -->
+  <div id="freeCasesBar" style="display:none;margin-bottom:14px;background:var(--bg2);border:1px solid var(--accent);border-radius:10px;padding:12px 16px">
+    <div style="font-size:12px;color:var(--accent);font-family:Orbitron,monospace;letter-spacing:1px;margin-bottom:8px">📦 БЕСПЛАТНЫЕ КЕЙСЫ</div>
+    <div id="freeCasesList" style="display:flex;flex-wrap:wrap;gap:8px"></div>
   </div>
   <div class="wheel-container">
     <div class="wheel-pointer">▼</div>
@@ -1141,7 +1146,7 @@ function saveDB() {
 }
 function getUser(name) { return DB[name] || null; }
 function createUser(name) {
-  DB[name] = {name, balance:0, inventory:[], wheelSpins:3, lastWheelDate:'', created:Date.now()};
+  DB[name] = {name, balance:0, inventory:[], wheelSpins:3, lastWheelDate:'', freeCases:[], dailyClicks:0, lastClickDate:'', created:Date.now()};
   saveDB();
   return DB[name];
 }
@@ -1170,6 +1175,7 @@ function doLogin() {
   checkDailySpins();
   initUpgrade();
   initAdmin();
+  updateClickBtn();
 }
 
 function logout() {
@@ -1191,10 +1197,49 @@ document.getElementById('loginInput').addEventListener('keydown', e => { if(e.ke
 function updateBalance() {
   document.getElementById('balanceDisplay').textContent = '$' + (currentUser.balance||0).toFixed(2);
 }
+const DAILY_CLICK_LIMIT = 50;
+
+function getClicksLeft() {
+  if(!currentUser) return 0;
+  const today = new Date().toDateString();
+  if(currentUser.lastClickDate !== today) {
+    currentUser.dailyClicks = 0;
+    currentUser.lastClickDate = today;
+  }
+  return Math.max(0, DAILY_CLICK_LIMIT - (currentUser.dailyClicks||0));
+}
+
+function updateClickBtn() {
+  const btn = document.getElementById('add1Btn');
+  if(!btn) return;
+  const left = getClicksLeft();
+  if(left <= 0) {
+    btn.textContent = '+$1 (0)';
+    btn.disabled = true;
+    btn.style.opacity = '0.4';
+    btn.style.cursor = 'not-allowed';
+  } else {
+    btn.textContent = `+$1 (${left})`;
+    btn.disabled = false;
+    btn.style.opacity = '1';
+    btn.style.cursor = 'pointer';
+  }
+}
+
 function addFunds(n) {
+  const left = getClicksLeft();
+  if(left <= 0) {
+    toast(`Лимит кликов на сегодня исчерпан (${DAILY_CLICK_LIMIT}/день). Завтра снова!`, 'error');
+    return;
+  }
+  currentUser.dailyClicks = (currentUser.dailyClicks||0) + 1;
+  currentUser.lastClickDate = new Date().toDateString();
   currentUser.balance = +(currentUser.balance + n).toFixed(2);
-  updateBalance(); saveUser();
-  toast(`+$${n} добавлено`,'success');
+  updateBalance();
+  updateClickBtn();
+  saveUser();
+  const remaining = getClicksLeft();
+  toast(`+$${n} добавлено · осталось кликов: ${remaining}`, 'success');
 }
 
 // ═══════════════════════════════════════
@@ -1289,7 +1334,18 @@ function generateSkin(caseData) {
 // ═══════════════════════════════════════
 async function openCase() {
   if(isOpening) return;
-  const cost = currentCase.price*currentQty;
+  const cost = currentCase.price * currentQty;
+
+  // Check if this is a free case open (from wheel prize)
+  if(_freeCaseOpen) {
+    _freeCaseOpen = false; // consume the flag — only 1 free open per trigger
+    // free: no charge, force qty=1
+    isOpening=true;
+    resultItems=[generateSkin(currentCase)];
+    await runRoulette(resultItems[0]);
+    return;
+  }
+
   if(currentUser.balance < cost){ toast('Недостаточно средств!','error'); return; }
   isOpening=true;
   currentUser.balance=+(currentUser.balance-cost).toFixed(2);
@@ -1385,20 +1441,66 @@ function renderInv() {
   if(!currentUser) return;
   const grid=document.getElementById('invGrid');
   const inv=currentUser.inventory||[];
-  const filtered=invFilter==='all'?inv:inv.filter(i=>i.rarity===invFilter);
+
+  // Build stacked groups: key = weapon||skin
+  const groups = {};
+  inv.forEach((item, realIdx) => {
+    const key = item.weapon + '||' + item.skin;
+    if(!groups[key]) {
+      groups[key] = { item, indices:[realIdx], count:1, totalPrice: item.price };
+    } else {
+      groups[key].indices.push(realIdx);
+      groups[key].count++;
+      groups[key].totalPrice += item.price;
+    }
+  });
+
+  const filtered = Object.values(groups).filter(g =>
+    invFilter==='all' || g.item.rarity===invFilter
+  );
+
   const tot=inv.reduce((s,i)=>s+i.price,0);
   document.getElementById('invStats').innerHTML=`Предметов: <span>${inv.length}</span> · <span>$${tot.toFixed(2)}</span>`;
-  if(filtered.length===0){ grid.innerHTML=`<div class="inv-empty">${inv.length===0?'📦 Инвентарь пуст.<br><small>Открой кейс!</small>':'Нет предметов этой редкости'}</div>`; return; }
+
+  if(!filtered.length){
+    grid.innerHTML=`<div class="inv-empty">${inv.length===0?'📦 Инвентарь пуст.<br><small>Открой кейс!</small>':'Нет предметов этой редкости'}</div>`;
+    return;
+  }
+
+  // Sort by single-item price descending
+  filtered.sort((a,b)=>b.item.price-a.item.price);
+
   grid.innerHTML='';
-  filtered.slice().sort((a,b)=>b.price-a.price).forEach(item=>{
-    const realIdx=inv.indexOf(item);
+  filtered.forEach(g => {
+    const item=g.item;
     const div=document.createElement('div');
     div.className=`inv-item rc-${item.rarity}`;
     div.style.borderColor=`var(--rc-${item.rarity})`;
+    div.style.position='relative';
     const imgSrc=imgOrSVG(item.weapon,item.skin,item.rarity);
-    div.innerHTML=`<img src="${imgSrc}" alt="${item.skin}" onerror="this.src='${skinSVG(item.weapon,item.skin,item.rarity)}'"><div class="inv-weapon">${item.weapon}</div><div class="inv-name">${item.skin}</div><div class="inv-wear">${item.wear}</div><div class="inv-price">$${item.price.toFixed(2)}</div><button class="btn-sell-inv" onclick="sellInvItem(${realIdx})">Продать</button>`;
+    const stackBadge = g.count>1
+      ? `<div style="position:absolute;top:6px;right:6px;background:var(--bg);border:1px solid var(--rc-${item.rarity});color:var(--rc-${item.rarity});font-family:Orbitron,monospace;font-size:11px;font-weight:700;padding:1px 6px;border-radius:10px;">×${g.count}</div>`
+      : '';
+    const displayPrice = g.count>1
+      ? `<div class="inv-price" style="font-size:11px">${g.count}× $${item.price.toFixed(2)}</div><div style="font-family:Orbitron,monospace;font-size:13px;font-weight:700;color:var(--rc-${item.rarity});margin-bottom:7px">=$${g.totalPrice.toFixed(2)}</div>`
+      : `<div class="inv-price">$${item.price.toFixed(2)}</div>`;
+    // Use first index for single sell, or sell all of this type
+    const sellLabel = g.count>1 ? `Продать ×1 ($${item.price.toFixed(2)})` : `Продать`;
+    const realIdx0 = g.indices[0];
+    div.innerHTML=`${stackBadge}<img src="${imgSrc}" alt="${item.skin}" onerror="this.src='${skinSVG(item.weapon,item.skin,item.rarity)}'"><div class="inv-weapon">${item.weapon}</div><div class="inv-name">${item.skin}</div><div class="inv-wear">${item.wear}</div>${displayPrice}<button class="btn-sell-inv" onclick="sellInvItem(${realIdx0})">${sellLabel}</button>${g.count>1?`<button class="btn-sell-inv" style="margin-top:4px;background:rgba(235,75,75,.12);border-color:rgba(235,75,75,.3);color:var(--red)" onclick="sellAllOfType('${item.weapon}','${item.skin}')">Продать все ×${g.count}</button>`:''}`;
     grid.appendChild(div);
   });
+}
+
+function sellAllOfType(weapon, skin) {
+  const inv = currentUser.inventory;
+  const toSell = inv.filter(i => i.weapon===weapon && i.skin===skin);
+  if(!toSell.length) return;
+  const tot = toSell.reduce((s,i)=>s+i.price,0);
+  currentUser.inventory = inv.filter(i => !(i.weapon===weapon && i.skin===skin));
+  currentUser.balance = +(currentUser.balance+tot).toFixed(2);
+  updateBalance(); saveUser(); renderInv();
+  toast(`Продано ${toSell.length}× ${weapon} | ${skin} · $${tot.toFixed(2)}`,'success');
 }
 function sellInvItem(idx) {
   const item=currentUser.inventory[idx]; if(!item) return;
@@ -1783,18 +1885,18 @@ function setBetX2(){const v=parseFloat(document.getElementById('betAmt').value)|
 //  FORTUNE WHEEL
 // ═══════════════════════════════════════
 const WHEEL_PRIZES = [
-  {label:'$5',type:'money',value:5,color:'#e4ae39'},
-  {label:'Скин',type:'skin',value:null,color:'#8847ff'},
-  {label:'$2',type:'money',value:2,color:'#3b82f6'},
-  {label:'+3 попытки',type:'spins',value:3,color:'#2ecc71'},
-  {label:'Кейс',type:'case',value:null,color:'#eb4b4b'},
-  {label:'$10',type:'money',value:10,color:'#f39c12'},
-  {label:'Скин',type:'skin',value:null,color:'#d32ce6'},
-  {label:'$1',type:'money',value:1,color:'#5e98d9'},
-  {label:'Кейс',type:'case',value:null,color:'#4ade80'},
-  {label:'$50',type:'money',value:50,color:'#e4ae39'},
-  {label:'+3 попытки',type:'spins',value:3,color:'#06b6d4'},
-  {label:'$0.50',type:'money',value:0.5,color:'#7a8094'},
+  {label:'Деньги',  type:'money', value:5,    color:'#e4ae39'},
+  {label:'Скин',    type:'skin',  value:null,  color:'#8847ff'},
+  {label:'Деньги',  type:'money', value:2,    color:'#3b82f6'},
+  {label:'+3 спина',type:'spins', value:3,    color:'#2ecc71'},
+  {label:'Кейс',    type:'case',  value:null,  color:'#eb4b4b'},
+  {label:'Деньги',  type:'money', value:10,   color:'#f39c12'},
+  {label:'Скин',    type:'skin',  value:null,  color:'#d32ce6'},
+  {label:'Деньги',  type:'money', value:1,    color:'#5e98d9'},
+  {label:'Кейс',    type:'case',  value:null,  color:'#4ade80'},
+  {label:'Деньги',  type:'money', value:50,   color:'#e4ae39'},
+  {label:'+3 спина',type:'spins', value:3,    color:'#06b6d4'},
+  {label:'Деньги',  type:'money', value:0.5,  color:'#7a8094'},
 ];
 
 let wheelSpinning=false,wheelAngle=0,wheelCtx=null;
@@ -1810,7 +1912,23 @@ function checkDailySpins() {
   updateSpinsDisplay();
 }
 function updateSpinsDisplay() {
-  document.getElementById('spinsLeftDisplay').textContent=currentUser?.wheelSpins||0;
+  const el = document.getElementById('spinsLeftDisplay');
+  if(el) el.textContent = currentUser?.wheelSpins||0;
+  renderFreeCasesBar();
+}
+
+function renderFreeCasesBar() {
+  const bar = document.getElementById('freeCasesBar');
+  const list = document.getElementById('freeCasesList');
+  if(!bar||!list||!currentUser) return;
+  const fc = currentUser.freeCases||[];
+  if(!fc.length) { bar.style.display='none'; return; }
+  bar.style.display='block';
+  list.innerHTML = fc.map((fc,i) =>
+    `<button class="btn btn-gold" style="font-size:12px;padding:6px 14px" onclick="useFreeCase('${fc.caseId}',${i})">
+      🔓 ${fc.caseName}
+    </button>`
+  ).join('');
 }
 
 function initWheel() {
@@ -1836,18 +1954,28 @@ function drawWheel(angle) {
     ctx.strokeStyle='#1a1d25'; ctx.lineWidth=2; ctx.stroke();
     ctx.save(); ctx.translate(cx,cy); ctx.rotate(a+step/2);
     ctx.textAlign='right'; ctx.fillStyle='#fff';
-    ctx.font='bold 13px Orbitron,monospace';
-    ctx.shadowColor='rgba(0,0,0,.8)'; ctx.shadowBlur=4;
-    ctx.fillText(p.label,R-12,5);
+    ctx.shadowColor='rgba(0,0,0,.9)'; ctx.shadowBlur=5;
+    // Line 1: type label
+    ctx.font='bold 12px Orbitron,monospace';
+    ctx.fillText(p.label, R-10, -4);
+    // Line 2: value for money
+    if(p.type==='money'){
+      ctx.font='bold 11px Orbitron,monospace';
+      ctx.fillStyle='#ffdd88';
+      ctx.fillText(`$${p.value}`, R-10, 10);
+    }
     ctx.restore();
   });
+  // outer ring
+  ctx.beginPath(); ctx.arc(cx,cy,R,0,Math.PI*2);
+  ctx.strokeStyle='rgba(228,174,57,.3)'; ctx.lineWidth=3; ctx.stroke();
   // center circle
-  ctx.beginPath(); ctx.arc(cx,cy,22,0,Math.PI*2);
+  ctx.beginPath(); ctx.arc(cx,cy,24,0,Math.PI*2);
   ctx.fillStyle='#0f1118'; ctx.fill();
   ctx.strokeStyle='#e4ae39'; ctx.lineWidth=2; ctx.stroke();
-  // logo
-  ctx.font='bold 9px Orbitron,monospace'; ctx.fillStyle='#e4ae39';
-  ctx.textAlign='center'; ctx.fillText('CS2',cx,cy+3);
+  ctx.font='bold 8px Orbitron,monospace'; ctx.fillStyle='#e4ae39';
+  ctx.textAlign='center'; ctx.shadowBlur=0;
+  ctx.fillText('CS2',cx,cy+3);
 }
 
 function spinWheel() {
@@ -1858,19 +1986,39 @@ function spinWheel() {
   document.getElementById('wheelSpinBtn').disabled=true;
   document.getElementById('wheelResultBox').style.display='none';
 
+  // Pick a prize
   const prizeIdx=Math.floor(Math.random()*WHEEL_PRIZES.length);
-  const n=WHEEL_PRIZES.length, step=(Math.PI*2)/n;
-  const extraSpins=5+Math.random()*3;
-  const targetAngle=-(prizeIdx*step+step/2)+(Math.PI*2*extraSpins);
-  const duration=4000, start=Date.now(), startAngle=wheelAngle;
+  const n=WHEEL_PRIZES.length;
+  const step=(Math.PI*2)/n;
+
+  // The pointer sits at the TOP of the canvas which is -π/2 in canvas coords.
+  // Segments start at `wheelAngle + i*step`.
+  // We want segment `prizeIdx` centered at the pointer.
+  // Center of prize segment (in wheel-local coords) = prizeIdx*step + step/2
+  // We need: wheelAngle + prizeIdx*step + step/2 ≡ -π/2  (mod 2π)
+  // So targetAngle = -π/2 - (prizeIdx*step + step/2) + k*2π   (choose k so we spin forward several full turns)
+  const fullSpins = 6 + Math.floor(Math.random()*3); // 6–8 full spins
+  const rawOffset = -Math.PI/2 - (prizeIdx*step + step/2);
+  const targetAngle = rawOffset + fullSpins*(Math.PI*2); // total rotation from zero
+  // We'll rotate the wheel TO (wheelAngle + targetAngle - wheelAngle) = set absolute angle
+  const finalAngle = rawOffset + fullSpins*(Math.PI*2); // absolute target
+  const startAngle = wheelAngle;
+  const totalDelta = finalAngle - (startAngle % (Math.PI*2)) + (Math.PI*2) * fullSpins;
+
+  const duration=5000, start=Date.now();
 
   function frame() {
-    const elapsed=Date.now()-start, t=Math.min(elapsed/duration,1);
-    const ease=t<.5?4*t*t*t:(t-1)*(2*t-2)*(2*t-2)+1;
-    wheelAngle=startAngle+targetAngle*ease;
+    const elapsed=Date.now()-start;
+    const t=Math.min(elapsed/duration,1);
+    // Cubic ease-out
+    const ease=1-Math.pow(1-t,4);
+    wheelAngle=startAngle+totalDelta*ease;
     drawWheel(wheelAngle);
     if(t<1){ requestAnimationFrame(frame); }
     else {
+      // Snap to exact final angle
+      wheelAngle = startAngle + totalDelta;
+      drawWheel(wheelAngle);
       wheelSpinning=false;
       document.getElementById('wheelSpinBtn').disabled=false;
       grantWheelPrize(prizeIdx);
@@ -1880,31 +2028,92 @@ function spinWheel() {
 }
 
 function grantWheelPrize(idx) {
-  const prize=WHEEL_PRIZES[idx];
-  let msg='';
-  if(prize.type==='money'){
-    currentUser.balance=+(currentUser.balance+prize.value).toFixed(2);
-    updateBalance(); msg=`💰 +$${prize.value}`;
-  } else if(prize.type==='spins'){
-    currentUser.wheelSpins=(currentUser.wheelSpins||0)+prize.value;
-    updateSpinsDisplay(); msg=`🎡 +${prize.value} попытки`;
-  } else if(prize.type==='case'){
-    const rndCase=CASES[Math.floor(Math.random()*CASES.length)];
-    // Give a free open — add to balance the case price
-    currentUser.balance=+(currentUser.balance+rndCase.price).toFixed(2);
-    updateBalance(); msg=`📦 Кейс: ${rndCase.name} ($${rndCase.price.toFixed(2)})`;
-  } else if(prize.type==='skin'){
-    // Generate a random skin from random case
-    const rndCase=CASES[Math.floor(Math.random()*CASES.length)];
-    const skin=generateSkin(rndCase);
+  const prize = WHEEL_PRIZES[idx];
+  let msg = '';
+  let msgColor = 'gold';
+  let resultHtml = '';
+
+  if(prize.type === 'money') {
+    currentUser.balance = +(currentUser.balance + prize.value).toFixed(2);
+    updateBalance();
+    msg = `💰 Деньги: +$${prize.value}`;
+    msgColor = 'success';
+    resultHtml = `<div style="font-size:32px;margin-bottom:8px">💰</div>
+      <div style="font-family:Orbitron,monospace;font-size:22px;color:var(--accent);font-weight:900">+$${prize.value}</div>
+      <div style="color:var(--text2);font-size:13px;margin-top:4px">добавлено на баланс</div>`;
+
+  } else if(prize.type === 'spins') {
+    currentUser.wheelSpins = (currentUser.wheelSpins||0) + prize.value;
+    updateSpinsDisplay();
+    msg = `🎡 +${prize.value} попытки колеса`;
+    msgColor = 'success';
+    resultHtml = `<div style="font-size:32px;margin-bottom:8px">🎡</div>
+      <div style="font-family:Orbitron,monospace;font-size:22px;color:var(--green);font-weight:900">+${prize.value} попытки</div>
+      <div style="color:var(--text2);font-size:13px;margin-top:4px">добавлено попыток колеса</div>`;
+
+  } else if(prize.type === 'case') {
+    // Give a FREE case key — random official case stored in freeCases[]
+    const officialCases = CASES.filter(c => c.type === 'official');
+    const rndCase = officialCases[Math.floor(Math.random() * officialCases.length)];
+    if(!currentUser.freeCases) currentUser.freeCases = [];
+    currentUser.freeCases.push({ caseId: rndCase.id, caseName: rndCase.name, earned: Date.now() });
+    msg = `📦 Бесплатный кейс: ${rndCase.name}!`;
+    msgColor = 'gold';
+    resultHtml = `<div style="font-size:32px;margin-bottom:8px">📦</div>
+      <div style="font-family:Orbitron,monospace;font-size:16px;color:var(--accent);font-weight:700">${rndCase.name}</div>
+      <div style="color:var(--text2);font-size:12px;margin-top:4px;margin-bottom:10px">бесплатный кейс!</div>
+      <button class="btn btn-gold" style="width:100%" onclick="useFreeCase('${rndCase.id}')">🔓 Открыть сейчас</button>`;
+
+  } else if(prize.type === 'skin') {
+    // Generate a real random skin from a random case
+    const rndCase = CASES[Math.floor(Math.random() * CASES.length)];
+    const skin = generateSkin(rndCase);
+    currentUser.inventory = currentUser.inventory || [];
     currentUser.inventory.push(skin);
-    msg=`🎁 ${skin.weapon} | ${skin.skin} ($${skin.price.toFixed(2)})`;
+    msg = `🎁 ${skin.weapon} | ${skin.skin} (${skin.wearShort}) · $${skin.price.toFixed(2)}`;
+    msgColor = 'gold';
+    const rarityColor = `var(--rc-${skin.rarity})`;
+    resultHtml = `<div style="font-size:32px;margin-bottom:8px">🎁</div>
+      <div style="font-size:11px;color:var(--text2)">${skin.weapon}</div>
+      <div style="font-weight:700;color:#fff;font-size:14px;margin-bottom:2px">${skin.skin}</div>
+      <div style="font-size:11px;color:var(--text2);margin-bottom:4px">${skin.wear} (${skin.float})</div>
+      <div style="font-family:Orbitron,monospace;font-size:16px;font-weight:700;color:${rarityColor}">$${skin.price.toFixed(2)}</div>
+      <div style="font-size:11px;color:${rarityColor};margin-top:2px">${skin.rarity.toUpperCase()}</div>`;
+    if(['covert','gold','classified'].includes(skin.rarity)) spawnParticles(skin.rarity);
   }
+
   saveUser();
-  toast(`🎡 ${msg}`,'gold');
-  document.getElementById('wheelResultVal').textContent=msg;
-  document.getElementById('wheelResultBox').style.display='block';
+  toast(`🎡 ${msg}`, msgColor);
+  const box = document.getElementById('wheelResultBox');
+  document.getElementById('wheelResultVal').innerHTML = resultHtml;
+  box.style.display = 'block';
 }
+
+// Use a free case key — opens the case without charging balance
+function useFreeCase(caseId, fcIndex) {
+  if(!currentUser.freeCases) return;
+  // Find by index if provided, otherwise by caseId
+  let idx = fcIndex !== undefined ? fcIndex : currentUser.freeCases.findIndex(fc => fc.caseId === caseId);
+  if(idx === -1) { toast('Ключ не найден','error'); return; }
+  const fc = currentUser.freeCases[idx];
+  currentUser.freeCases.splice(idx, 1);
+  saveUser();
+  renderFreeCasesBar();
+
+  // Navigate to cases and open without charging
+  const tab = document.querySelector('[data-page="cases"]');
+  if(tab) showPage('cases', tab);
+  setTimeout(() => {
+    const caseData = CASES.find(c => c.id === fc.caseId);
+    if(!caseData) return;
+    openCaseModal(fc.caseId);
+    // Override openCase cost: temporarily set a flag
+    _freeCaseOpen = true;
+    toast(`🔓 Открываю бесплатно: ${caseData.name}`, 'gold');
+  }, 300);
+}
+
+let _freeCaseOpen = false;
 
 // ═══════════════════════════════════════
 //  ADMIN PANEL
