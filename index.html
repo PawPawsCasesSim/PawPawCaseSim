@@ -238,7 +238,59 @@ html,body{min-height:100vh;background:var(--bg);color:var(--text);font-family:'R
 @keyframes slideIn{from{transform:translateX(110%);opacity:0}to{transform:translateX(0);opacity:1}}
 .toast.success{border-color:var(--green)}.toast.error{border-color:var(--red)}.toast.gold{border-color:var(--accent)}
 
-/* ── PARTICLES ── */
+/* ── ADMIN PANEL ── */
+.admin-tab{color:#e74c3c!important;border-color:rgba(231,76,60,.3)!important}
+.admin-tab.active{color:#e74c3c!important;border-color:rgba(231,76,60,.5)!important}
+.admin-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+.admin-badge{background:linear-gradient(135deg,#c0392b,#922b21);color:#fff;padding:4px 14px;border-radius:20px;font-size:12px;font-weight:700;font-family:'Orbitron',monospace;letter-spacing:1px}
+.admin-stats-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;margin-bottom:20px}
+.admin-stat-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px 16px;text-align:center}
+.admin-stat-card .asc-val{font-family:'Orbitron',monospace;font-size:20px;font-weight:700;color:var(--accent);margin-bottom:4px}
+.admin-stat-card .asc-lbl{font-size:11px;color:var(--text2);letter-spacing:.5px}
+.admin-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px}
+.admin-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:18px}
+.admin-card-title{font-family:'Orbitron',monospace;font-size:13px;color:var(--accent);letter-spacing:1px;margin-bottom:14px}
+.admin-field{margin-bottom:10px;position:relative}
+.admin-field label{display:block;font-size:11px;color:var(--text2);margin-bottom:4px;letter-spacing:.5px}
+.admin-input{width:100%;padding:9px 12px;background:var(--bg3);border:1px solid var(--border);border-radius:7px;color:#fff;font-family:'Rajdhani',sans-serif;font-size:14px;outline:none;transition:border-color .15s}
+.admin-input:focus{border-color:var(--accent)}
+.admin-user-suggestions{position:absolute;top:100%;left:0;right:0;background:var(--bg3);border:1px solid var(--border);border-radius:0 0 7px 7px;z-index:50;max-height:140px;overflow-y:auto;display:none}
+.admin-user-suggestions.open{display:block}
+.admin-sugg-item{padding:7px 12px;cursor:pointer;font-size:13px;transition:background .1s;display:flex;justify-content:space-between;align-items:center}
+.admin-sugg-item:hover{background:var(--bg4)}
+.admin-sugg-item .asi-bal{font-family:'Orbitron',monospace;font-size:11px;color:var(--accent)}
+.admin-quick-btns{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px}
+.admin-quick-btns button{padding:4px 10px;border-radius:5px;border:1px solid var(--border);background:var(--bg3);color:var(--text2);cursor:pointer;font-size:12px;font-weight:600;transition:all .15s}
+.admin-quick-btns button:hover{border-color:var(--accent);color:var(--accent)}
+.admin-action-btn{width:100%;padding:10px;border-radius:8px;border:none;font-family:'Orbitron',monospace;font-size:12px;font-weight:700;cursor:pointer;transition:all .2s;letter-spacing:.5px;margin-top:6px}
+.admin-action-btn.green{background:linear-gradient(135deg,#27ae60,#1e8449);color:#fff}
+.admin-action-btn.green:hover{box-shadow:0 0 14px rgba(46,204,113,.4)}
+.admin-action-btn.gold{background:linear-gradient(135deg,var(--accent),#c8922a);color:#000}
+.admin-action-btn.gold:hover{box-shadow:0 0 14px rgba(228,174,57,.4)}
+.admin-action-btn.red{background:linear-gradient(135deg,#c0392b,#922b21);color:#fff}
+.admin-action-btn.red:hover{box-shadow:0 0 14px rgba(192,57,43,.4)}
+.admin-skin-select{max-height:180px;overflow-y:auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:5px;margin-bottom:8px}
+.admin-skin-opt{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:5px;text-align:center;cursor:pointer;transition:all .15s;font-size:10px}
+.admin-skin-opt:hover{border-color:var(--accent);transform:translateY(-1px)}
+.admin-skin-opt.selected{border-color:var(--accent)!important;box-shadow:0 0 8px rgba(228,174,57,.3)}
+.admin-skin-opt .aso-name{font-size:9px;color:#fff;font-weight:600;line-height:1.2;margin-top:2px}
+.admin-skin-opt .aso-price{font-family:'Orbitron',monospace;font-size:9px;font-weight:700;margin-top:1px}
+.admin-selected-skin{background:var(--bg3);border:1px solid var(--accent);border-radius:8px;padding:10px;text-align:center;margin-bottom:6px}
+.admin-selected-skin .ass-name{font-size:13px;font-weight:700;color:#fff}
+.admin-selected-skin .ass-price{font-family:'Orbitron',monospace;font-size:12px;color:var(--accent);margin-top:2px}
+.admin-inv-preview{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:10px;margin-top:8px;max-height:200px;overflow-y:auto}
+.admin-users-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;max-height:280px;overflow-y:auto}
+.admin-user-row{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:10px 12px;display:flex;flex-direction:column;gap:3px}
+.admin-user-row .aur-name{font-weight:700;color:#fff;font-size:14px}
+.admin-user-row .aur-info{font-size:11px;color:var(--text2)}
+.admin-user-row .aur-bal{font-family:'Orbitron',monospace;font-size:12px;color:var(--accent)}
+.admin-log{max-height:200px;overflow-y:auto;font-size:12px;font-family:monospace}
+.admin-log-entry{padding:4px 0;border-bottom:1px solid var(--border);color:var(--text2)}
+.admin-log-entry .ale-time{color:var(--text2);margin-right:8px}
+.admin-log-entry .ale-action{color:#fff}
+.admin-log-entry .ale-target{color:var(--accent)}
+.admin-log-entry.success .ale-action{color:var(--green)}
+.admin-log-entry.error .ale-action{color:var(--red)}
 @keyframes fall{to{transform:translateY(110vh) rotate(720deg);opacity:0}}
 </style>
 </head>
@@ -275,6 +327,7 @@ html,body{min-height:100vh;background:var(--bg);color:var(--text);font-family:'R
   <button class="nav-tab" data-page="upgrade" onclick="showPage('upgrade',this)">⬆️ Upgrade</button>
   <button class="nav-tab" data-page="crash" onclick="showPage('crash',this)">📈 Crash</button>
   <button class="nav-tab" data-page="wheel" onclick="showPage('wheel',this)">🎡 Колесо</button>
+  <button class="nav-tab admin-tab" id="adminTab" data-page="admin" onclick="showPage('admin',this)" style="display:none">🛡️ Админ</button>
 </div>
 
 <div class="main">
@@ -405,6 +458,116 @@ html,body{min-height:100vh;background:var(--bg);color:var(--text);font-family:'R
       <h3>ВЫ ПОЛУЧИЛИ</h3>
       <div class="wheel-result-val" id="wheelResultVal"></div>
     </div>
+  </div>
+</div>
+
+<!-- ADMIN PANEL (PawPaw69 only) -->
+<div class="page" id="page-admin">
+  <div class="admin-header">
+    <div class="section-title" style="margin-bottom:0">🛡️ ADMIN <span>PANEL</span></div>
+    <div class="admin-badge">PawPaw69 · Superadmin</div>
+  </div>
+
+  <!-- Stats row -->
+  <div class="admin-stats-row" id="adminStatsRow"></div>
+
+  <div class="admin-grid">
+    <!-- Give money -->
+    <div class="admin-card">
+      <div class="admin-card-title">💰 Выдать деньги</div>
+      <div class="admin-field">
+        <label>Пользователь</label>
+        <input type="text" id="adminMoneyUser" class="admin-input" placeholder="Введи ник...">
+        <div class="admin-user-suggestions" id="adminMoneySugg"></div>
+      </div>
+      <div class="admin-field">
+        <label>Сумма ($)</label>
+        <input type="number" id="adminMoneyAmt" class="admin-input" value="100" min="0.01" step="0.01">
+      </div>
+      <div class="admin-quick-btns">
+        <button onclick="setAdminMoney(10)">$10</button>
+        <button onclick="setAdminMoney(100)">$100</button>
+        <button onclick="setAdminMoney(1000)">$1,000</button>
+        <button onclick="setAdminMoney(10000)">$10,000</button>
+        <button onclick="setAdminMoney(100000)">$100K</button>
+      </div>
+      <button class="admin-action-btn green" onclick="adminGiveMoney()">💰 Выдать деньги</button>
+    </div>
+
+    <!-- Give skin -->
+    <div class="admin-card">
+      <div class="admin-card-title">🎁 Выдать скин</div>
+      <div class="admin-field">
+        <label>Пользователь</label>
+        <input type="text" id="adminSkinUser" class="admin-input" placeholder="Введи ник...">
+        <div class="admin-user-suggestions" id="adminSkinSugg"></div>
+      </div>
+      <div class="admin-field">
+        <label>Поиск скина</label>
+        <input type="text" id="adminSkinSearch" class="admin-input" placeholder="Поиск по названию..." oninput="renderAdminSkinSearch()">
+      </div>
+      <div class="admin-skin-select" id="adminSkinSelect"></div>
+      <div id="adminSelectedSkin" class="admin-selected-skin" style="display:none"></div>
+      <button class="admin-action-btn gold" onclick="adminGiveSkin()">🎁 Выдать скин</button>
+    </div>
+
+    <!-- Set balance -->
+    <div class="admin-card">
+      <div class="admin-card-title">⚙️ Установить баланс</div>
+      <div class="admin-field">
+        <label>Пользователь</label>
+        <input type="text" id="adminSetBalUser" class="admin-input" placeholder="Введи ник...">
+        <div class="admin-user-suggestions" id="adminSetBalSugg"></div>
+      </div>
+      <div class="admin-field">
+        <label>Новый баланс ($)</label>
+        <input type="number" id="adminSetBalAmt" class="admin-input" value="1000" min="0" step="0.01">
+      </div>
+      <button class="admin-action-btn red" onclick="adminSetBalance()">⚙️ Установить баланс</button>
+    </div>
+
+    <!-- Clear inventory -->
+    <div class="admin-card">
+      <div class="admin-card-title">🗑️ Управление инвентарём</div>
+      <div class="admin-field">
+        <label>Пользователь</label>
+        <input type="text" id="adminInvUser" class="admin-input" placeholder="Введи ник...">
+        <div class="admin-user-suggestions" id="adminInvSugg"></div>
+      </div>
+      <button class="admin-action-btn red" onclick="adminClearInv()" style="margin-bottom:8px">🗑️ Очистить инвентарь</button>
+      <button class="admin-action-btn gold" onclick="adminViewInv()">👁 Просмотр инвентаря</button>
+      <div id="adminInvPreview" class="admin-inv-preview" style="display:none"></div>
+    </div>
+
+    <!-- Give wheel spins -->
+    <div class="admin-card">
+      <div class="admin-card-title">🎡 Выдать спины колеса</div>
+      <div class="admin-field">
+        <label>Пользователь</label>
+        <input type="text" id="adminSpinUser" class="admin-input" placeholder="Введи ник...">
+        <div class="admin-user-suggestions" id="adminSpinSugg"></div>
+      </div>
+      <div class="admin-field">
+        <label>Количество спинов</label>
+        <input type="number" id="adminSpinAmt" class="admin-input" value="5" min="1" max="100">
+      </div>
+      <button class="admin-action-btn green" onclick="adminGiveSpins()">🎡 Выдать спины</button>
+    </div>
+
+    <!-- Users list -->
+    <div class="admin-card" style="grid-column:span 2">
+      <div class="admin-card-title">👥 Все пользователи</div>
+      <div id="adminUsersList" class="admin-users-list"></div>
+    </div>
+  </div>
+
+  <!-- Admin log -->
+  <div class="admin-card" style="margin-top:16px">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+      <div class="admin-card-title" style="margin-bottom:0">📋 Лог действий</div>
+      <button class="admin-action-btn red" style="padding:4px 12px;font-size:12px;margin:0" onclick="clearAdminLog()">Очистить</button>
+    </div>
+    <div id="adminLog" class="admin-log"></div>
   </div>
 </div>
 
@@ -561,14 +724,15 @@ const RARITY_ORDER = ['consumer','industrial','milspec','restricted','classified
 
 // Official: weights as in real CS2
 const W_OFF = {consumer:79,industrial:0,milspec:15.98,restricted:3.2,classified:0.64,covert:0.128,gold:0.026};
-// Custom: much better loot — house edge ~30-35%, realistic chance to profit
-const W_CUST = {consumer:20,industrial:0,milspec:30,restricted:22,classified:12,covert:1.8,gold:0.35};
+// Custom: greatly boosted loot — restricted most common, real chance at classified/covert
+const W_CUST = {consumer:8,industrial:0,milspec:28,restricted:32,classified:18,covert:3.5,gold:0.7};
 
 const CASES = [
-  // ── OFFICIAL ──
+  // ══════════════════════════════════════
+  // OFFICIAL CASES
+  // ══════════════════════════════════════
   {id:'revolution',name:'Revolution Case',price:2.49,type:'official',badge:'hot',
-   desc:'17 скинов серии Revolution · EV ~$1.40',
-   weights:W_OFF,
+   desc:'17 скинов серии Revolution · EV ~$1.40',weights:W_OFF,
    contents:[
     {weapon:'AK-47',skin:'Head Shot',rarity:'covert',basePrice:28},
     {weapon:'M4A1-S',skin:'Emphorosaur-S',rarity:'covert',basePrice:22},
@@ -599,6 +763,7 @@ const CASES = [
     {weapon:'FAMAS',skin:'Decommissioned',rarity:'restricted',basePrice:1.3},
     {weapon:'SSG 08',skin:'Parallax',rarity:'milspec',basePrice:0.45},
     {weapon:'XM1014',skin:'Entombed',rarity:'milspec',basePrice:0.35},
+    {weapon:'Mac-10',skin:'Pipe Down',rarity:'milspec',basePrice:0.28},
     {weapon:'★ Karambit',skin:'Marble Fade',rarity:'gold',basePrice:480},
     {weapon:'★ Stiletto Knife',skin:'Tiger Tooth',rarity:'gold',basePrice:120},
   ]},
@@ -615,6 +780,7 @@ const CASES = [
     {weapon:'MP9',skin:'Starlight Protector',rarity:'restricted',basePrice:0.9},
     {weapon:'Nova',skin:'Sobeks Bite',rarity:'milspec',basePrice:0.30},
     {weapon:'Mag-7',skin:'Foresight',rarity:'milspec',basePrice:0.25},
+    {weapon:'Sawed-Off',skin:'Night Bloom',rarity:'milspec',basePrice:0.20},
   ]},
   {id:'clutch',name:'Clutch Case',price:4.20,type:'official',badge:'',
    desc:'Перчатки + премиум скины · EV ~$2.50',weights:W_OFF,
@@ -628,6 +794,7 @@ const CASES = [
     {weapon:'Five-SeveN',skin:'Hot Shot',rarity:'restricted',basePrice:1.6},
     {weapon:'Galil AR',skin:'Akoben',rarity:'restricted',basePrice:1.3},
     {weapon:'SSG 08',skin:'Fever Dream',rarity:'milspec',basePrice:0.40},
+    {weapon:'G3SG1',skin:'Digital Mesh',rarity:'milspec',basePrice:0.30},
     {weapon:'★ Gloves',skin:'Arid',rarity:'gold',basePrice:180},
     {weapon:'★ Specialist Gloves',skin:'Marble Fade',rarity:'gold',basePrice:550},
   ]},
@@ -641,6 +808,8 @@ const CASES = [
     {weapon:'P250',skin:'Wingshot',rarity:'classified',basePrice:9},
     {weapon:'AWP',skin:'Fade',rarity:'restricted',basePrice:4},
     {weapon:'Glock-18',skin:'Oxide Blaze',rarity:'restricted',basePrice:2.5},
+    {weapon:'P90',skin:'Neoqueen',rarity:'milspec',basePrice:0.5},
+    {weapon:'MAC-10',skin:'Gold Fever',rarity:'milspec',basePrice:0.35},
     {weapon:'★ Karambit',skin:'Lore',rarity:'gold',basePrice:580},
     {weapon:'★ Butterfly Knife',skin:'Lore',rarity:'gold',basePrice:780},
   ]},
@@ -655,8 +824,10 @@ const CASES = [
     {weapon:'P250',skin:'Asiimov',rarity:'restricted',basePrice:2.8},
     {weapon:'MP7',skin:'Akoben',rarity:'restricted',basePrice:1.8},
     {weapon:'UMP-45',skin:'Primal Saber',rarity:'restricted',basePrice:1.4},
+    {weapon:'Tec-9',skin:'Fuel Injector',rarity:'restricted',basePrice:1.1},
     {weapon:'FAMAS',skin:'Rapid Eye Movement',rarity:'milspec',basePrice:0.40},
     {weapon:'MP9',skin:'Hypnotic',rarity:'milspec',basePrice:0.30},
+    {weapon:'Nova',skin:'Exo',rarity:'milspec',basePrice:0.22},
     {weapon:'★ Karambit',skin:'Autotronic',rarity:'gold',basePrice:380},
     {weapon:'★ Bayonet',skin:'Lore',rarity:'gold',basePrice:220},
   ]},
@@ -671,8 +842,10 @@ const CASES = [
     {weapon:'MP5-SD',skin:'Desert Strike',rarity:'restricted',basePrice:2},
     {weapon:'P90',skin:'Baroque Red',rarity:'restricted',basePrice:1.4},
     {weapon:'UMP-45',skin:'Gold Bismuth',rarity:'restricted',basePrice:1.2},
+    {weapon:'Five-SeveN',skin:'Buddy',rarity:'restricted',basePrice:0.9},
     {weapon:'MAC-10',skin:'Allure',rarity:'milspec',basePrice:0.35},
     {weapon:'SSG 08',skin:'Fever Dream',rarity:'milspec',basePrice:0.28},
+    {weapon:'CZ75-Auto',skin:'Eco',rarity:'milspec',basePrice:0.20},
     {weapon:'★ Flip Knife',skin:'Doppler',rarity:'gold',basePrice:280},
     {weapon:'★ Shadow Daggers',skin:'Marble Fade',rarity:'gold',basePrice:85},
   ]},
@@ -689,85 +862,10 @@ const CASES = [
     {weapon:'XM1014',skin:'Entombed',rarity:'restricted',basePrice:1},
     {weapon:'MP7',skin:'Mischief',rarity:'milspec',basePrice:0.25},
     {weapon:'Nova',skin:'Toy Soldier',rarity:'milspec',basePrice:0.20},
+    {weapon:'Sawed-Off',skin:'Snake Camo',rarity:'milspec',basePrice:0.18},
     {weapon:'★ Gut Knife',skin:'Doppler',rarity:'gold',basePrice:160},
     {weapon:'★ Navaja Knife',skin:'Fade',rarity:'gold',basePrice:130},
   ]},
-
-  // ── CUSTOM (better drop rates via W_CUST) ──
-  {id:'custom_gold',name:'Gold Rush Case',price:24.99,type:'custom',badge:'custom',
-   desc:'⚠️ Высокий риск · EV ~$12 · House edge 52%',weights:W_CUST,
-   contents:[
-    {weapon:'AWP',skin:'Dragon Lore',rarity:'covert',basePrice:180},
-    {weapon:'AK-47',skin:'Wild Lotus',rarity:'covert',basePrice:130},
-    {weapon:'M4A4',skin:'Howl',rarity:'covert',basePrice:220},
-    {weapon:'AWP',skin:'Medusa',rarity:'classified',basePrice:18},
-    {weapon:'Desert Eagle',skin:'Blaze',rarity:'classified',basePrice:11},
-    {weapon:'AK-47',skin:'Fire Serpent',rarity:'classified',basePrice:14},
-    {weapon:'M4A1-S',skin:'Knight',rarity:'restricted',basePrice:4.5},
-    {weapon:'Glock-18',skin:'Fade',rarity:'restricted',basePrice:2.8},
-    {weapon:'Nova',skin:'Antique',rarity:'milspec',basePrice:0.5},
-    {weapon:'P250',skin:'Vino Primo',rarity:'milspec',basePrice:0.4},
-    {weapon:'★ Karambit',skin:'Case Hardened',rarity:'gold',basePrice:950},
-    {weapon:'★ Butterfly Knife',skin:'Doppler',rarity:'gold',basePrice:600},
-  ]},
-  {id:'custom_degen',name:"Degen's Case",price:49.99,type:'custom',badge:'custom',
-   desc:"💀 Только хардкор · EV ~$22 · House edge 56%",weights:W_CUST,
-   contents:[
-    {weapon:'★ Karambit',skin:'Sapphire',rarity:'gold',basePrice:2200},
-    {weapon:'★ Butterfly Knife',skin:'Emerald',rarity:'gold',basePrice:2800},
-    {weapon:'★ M9 Bayonet',skin:'Ruby',rarity:'gold',basePrice:1800},
-    {weapon:'AWP',skin:'Dragon Lore FN',rarity:'covert',basePrice:220},
-    {weapon:'AK-47',skin:'Wild Lotus FN',rarity:'covert',basePrice:150},
-    {weapon:'M4A4',skin:'Howl MW',rarity:'classified',basePrice:22},
-    {weapon:'Desert Eagle',skin:'Blaze FN',rarity:'classified',basePrice:14},
-    {weapon:'AK-47',skin:'Fire Serpent FN',rarity:'restricted',basePrice:5},
-    {weapon:'P250',skin:'Asiimov',rarity:'milspec',basePrice:0.6},
-    {weapon:'SSG 08',skin:'Blood in the Water',rarity:'milspec',basePrice:0.5},
-  ]},
-  {id:'custom_budget',name:'Budget Case',price:1.49,type:'custom',badge:'custom',
-   desc:'Для новичков · EV ~$0.75 · House edge 50%',weights:W_CUST,
-   contents:[
-    {weapon:'AK-47',skin:'Jaguar',rarity:'classified',basePrice:5.5},
-    {weapon:'M4A4',skin:'Dragon King',rarity:'classified',basePrice:4.5},
-    {weapon:'FAMAS',skin:'Styx',rarity:'restricted',basePrice:1.8},
-    {weapon:'P90',skin:'Grim',rarity:'restricted',basePrice:1.4},
-    {weapon:'Glock-18',skin:'Synth Leaf',rarity:'restricted',basePrice:1.1},
-    {weapon:'Nova',skin:'Gila',rarity:'milspec',basePrice:0.35},
-    {weapon:'MP9',skin:'Deadly Poison',rarity:'milspec',basePrice:0.28},
-    {weapon:'Tec-9',skin:'Toxic',rarity:'milspec',basePrice:0.22},
-    {weapon:'SSG 08',skin:'Abyss',rarity:'consumer',basePrice:0.06},
-    {weapon:'FAMAS',skin:'Colony',rarity:'consumer',basePrice:0.05},
-  ]},
-  {id:'custom_nightmare',name:'Nightmare Case',price:19.99,type:'custom',badge:'custom',
-   desc:'🌙 Мрачные скины · EV ~$9 · House edge 55%',weights:W_CUST,
-   contents:[
-    {weapon:'AK-47',skin:'Wild Lotus',rarity:'covert',basePrice:130},
-    {weapon:'AWP',skin:'Medusa',rarity:'covert',basePrice:18},
-    {weapon:'M4A4',skin:'Howl',rarity:'classified',basePrice:22},
-    {weapon:'Desert Eagle',skin:'Blaze',rarity:'classified',basePrice:11},
-    {weapon:'Glock-18',skin:'Fade',rarity:'restricted',basePrice:2.8},
-    {weapon:'AK-47',skin:'Fire Serpent',rarity:'restricted',basePrice:5},
-    {weapon:'SSG 08',skin:'Fever Dream',rarity:'milspec',basePrice:0.4},
-    {weapon:'Nova',skin:'Antique',rarity:'milspec',basePrice:0.35},
-    {weapon:'★ Karambit',skin:'Doppler',rarity:'gold',basePrice:420},
-    {weapon:'★ M9 Bayonet',skin:'Ruby',rarity:'gold',basePrice:1800},
-  ]},
-  {id:'custom_fire',name:'Fire Case',price:9.99,type:'custom',badge:'custom',
-   desc:'🔥 Огненные скины · EV ~$5.5',weights:W_CUST,
-   contents:[
-    {weapon:'AK-47',skin:'Fire Serpent',rarity:'covert',basePrice:55},
-    {weapon:'Desert Eagle',skin:'Blaze',rarity:'covert',basePrice:42},
-    {weapon:'M4A4',skin:'Howl',rarity:'classified',basePrice:22},
-    {weapon:'AWP',skin:'Mortis',rarity:'classified',basePrice:12},
-    {weapon:'Glock-18',skin:'Fade',rarity:'restricted',basePrice:2.8},
-    {weapon:'P250',skin:'Asiimov',rarity:'restricted',basePrice:2},
-    {weapon:'SSG 08',skin:'Abyss',rarity:'milspec',basePrice:0.3},
-    {weapon:'MP7',skin:'Mischief',rarity:'milspec',basePrice:0.25},
-    {weapon:'★ Karambit',skin:'Case Hardened',rarity:'gold',basePrice:950},
-    {weapon:'★ Butterfly Knife',skin:'Fade',rarity:'gold',basePrice:700},
-  ]},
-
-  // ── NEW OFFICIAL CASES ──
   {id:'operation_riptide',name:'Operation Riptide Case',price:3.45,type:'official',badge:'',
    desc:'Пляжная операция · EV ~$2.00',weights:W_OFF,
    contents:[
@@ -781,6 +879,7 @@ const CASES = [
     {weapon:'Five-SeveN',skin:'Scrawl',rarity:'restricted',basePrice:1.5},
     {weapon:'MAC-10',skin:'Ensnared',rarity:'milspec',basePrice:0.40},
     {weapon:'P250',skin:'Contaminant',rarity:'milspec',basePrice:0.32},
+    {weapon:'PP-Bizon',skin:'Aqua Pier',rarity:'milspec',basePrice:0.25},
     {weapon:'★ Stiletto Knife',skin:'Doppler',rarity:'gold',basePrice:185},
     {weapon:'★ Talon Knife',skin:'Marble Fade',rarity:'gold',basePrice:320},
   ]},
@@ -795,8 +894,10 @@ const CASES = [
     {weapon:'P90',skin:'Vent Rush',rarity:'restricted',basePrice:2.1},
     {weapon:'UMP-45',skin:'Recount',rarity:'restricted',basePrice:1.6},
     {weapon:'MP5-SD',skin:'Condition Zero',rarity:'restricted',basePrice:1.3},
+    {weapon:'CZ75-Auto',skin:'Distressed',rarity:'restricted',basePrice:1.0},
     {weapon:'Nova',skin:'Clear Polymer',rarity:'milspec',basePrice:0.38},
     {weapon:'Tec-9',skin:'Decimator',rarity:'milspec',basePrice:0.28},
+    {weapon:'G3SG1',skin:'Ventilator',rarity:'milspec',basePrice:0.22},
     {weapon:'★ Ursus Knife',skin:'Doppler',rarity:'gold',basePrice:210},
     {weapon:'★ Paracord Knife',skin:'Tiger Tooth',rarity:'gold',basePrice:145},
   ]},
@@ -811,52 +912,192 @@ const CASES = [
     {weapon:'Galil AR',skin:'Eco',rarity:'restricted',basePrice:2.5},
     {weapon:'SSG 08',skin:'Tropical Storm',rarity:'restricted',basePrice:1.8},
     {weapon:'MP7',skin:'Teal Blossom',rarity:'restricted',basePrice:1.4},
+    {weapon:'Sawed-Off',skin:'The Kraken',rarity:'restricted',basePrice:1.1},
     {weapon:'P250',skin:'Valence',rarity:'milspec',basePrice:0.42},
     {weapon:'FAMAS',skin:'Spitfire',rarity:'milspec',basePrice:0.33},
+    {weapon:'Dual Berettas',skin:'Heist',rarity:'milspec',basePrice:0.25},
     {weapon:'★ Falchion Knife',skin:'Doppler',rarity:'gold',basePrice:290},
     {weapon:'★ Bowie Knife',skin:'Marble Fade',rarity:'gold',basePrice:240},
   ]},
+  {id:'cs20',name:'CS20 Case',price:6.50,type:'official',badge:'',
+   desc:'20 лет CS · Ретро скины · EV ~$4.00',weights:W_OFF,
+   contents:[
+    {weapon:'AK-47',skin:'Fire Serpent',rarity:'covert',basePrice:220},
+    {weapon:'Desert Eagle',skin:'Blaze',rarity:'covert',basePrice:165},
+    {weapon:'AWP',skin:'Dragon Lore',rarity:'classified',basePrice:120},
+    {weapon:'M4A1-S',skin:'Master Piece',rarity:'classified',basePrice:28},
+    {weapon:'Glock-18',skin:'Steel Disruption',rarity:'classified',basePrice:7},
+    {weapon:'P90',skin:'Asiimov',rarity:'restricted',basePrice:3.5},
+    {weapon:'UMP-45',skin:'Primal Saber',rarity:'restricted',basePrice:2},
+    {weapon:'AUG',skin:'Stymphalian',rarity:'restricted',basePrice:1.8},
+    {weapon:'Nova',skin:'Wood Fired',rarity:'milspec',basePrice:0.35},
+    {weapon:'XM1014',skin:'Tranquility',rarity:'milspec',basePrice:0.28},
+    {weapon:'★ Classic Knife',skin:'Doppler',rarity:'gold',basePrice:340},
+    {weapon:'★ Karambit',skin:'Case Hardened',rarity:'gold',basePrice:650},
+  ]},
+  {id:'danger_zone',name:'Danger Zone Case',price:3.20,type:'official',badge:'',
+   desc:'Опасная зона · EV ~$1.90',weights:W_OFF,
+   contents:[
+    {weapon:'AK-47',skin:'Asiimov',rarity:'covert',basePrice:45},
+    {weapon:'M4A4',skin:'The Emperor',rarity:'covert',basePrice:22},
+    {weapon:'AWP',skin:'Neo-Noir',rarity:'classified',basePrice:12},
+    {weapon:'Desert Eagle',skin:'Code Red',rarity:'classified',basePrice:8},
+    {weapon:'Glock-18',skin:'Wasteland Rebel',rarity:'classified',basePrice:6},
+    {weapon:'AUG',skin:'Amber Slipstream',rarity:'restricted',basePrice:2.2},
+    {weapon:'MP5-SD',skin:'Phosphor',rarity:'restricted',basePrice:1.7},
+    {weapon:'R8 Revolver',skin:'Survivalist',rarity:'restricted',basePrice:1.4},
+    {weapon:'P250',skin:'Exchanger',rarity:'milspec',basePrice:0.38},
+    {weapon:'Tec-9',skin:'Snek-9',rarity:'milspec',basePrice:0.30},
+    {weapon:'Dual Berettas',skin:'Dezastre',rarity:'milspec',basePrice:0.22},
+    {weapon:'★ Huntsman Knife',skin:'Doppler',rarity:'gold',basePrice:195},
+    {weapon:'★ Skeleton Knife',skin:'Fade',rarity:'gold',basePrice:420},
+  ]},
+  {id:'horizon',name:'Horizon Case',price:3.60,type:'official',badge:'',
+   desc:'За горизонтом · EV ~$2.10',weights:W_OFF,
+   contents:[
+    {weapon:'AK-47',skin:'Neon Rider',rarity:'covert',basePrice:60},
+    {weapon:'M4A4',skin:'Daybreak',rarity:'covert',basePrice:24},
+    {weapon:'AWP',skin:'PAW',rarity:'classified',basePrice:10},
+    {weapon:'USP-S',skin:'Cortex',rarity:'classified',basePrice:8},
+    {weapon:'Five-SeveN',skin:'Hyper Beast',rarity:'classified',basePrice:6.5},
+    {weapon:'Glock-18',skin:'Warhawk',rarity:'restricted',basePrice:2.5},
+    {weapon:'SSG 08',skin:'Ghost Crusader',rarity:'restricted',basePrice:1.9},
+    {weapon:'FAMAS',skin:'Eye of Athena',rarity:'restricted',basePrice:1.5},
+    {weapon:'MAC-10',skin:'Aloha',rarity:'milspec',basePrice:0.42},
+    {weapon:'PP-Bizon',skin:'Night Riot',rarity:'milspec',basePrice:0.32},
+    {weapon:'MP9',skin:'Capillary',rarity:'milspec',basePrice:0.24},
+    {weapon:'★ Talon Knife',skin:'Doppler',rarity:'gold',basePrice:310},
+    {weapon:'★ Ursus Knife',skin:'Tiger Tooth',rarity:'gold',basePrice:180},
+  ]},
 
-  // ── NEW CUSTOM CASES ──
+  // ══════════════════════════════════════
+  // CUSTOM CASES
+  // ══════════════════════════════════════
+  {id:'custom_gold',name:'Gold Rush Case',price:24.99,type:'custom',badge:'custom',
+   desc:'⚠️ Высокий риск · EV ~$14 · Повышенный дроп',weights:W_CUST,
+   contents:[
+    {weapon:'AWP',skin:'Dragon Lore',rarity:'covert',basePrice:180},
+    {weapon:'AK-47',skin:'Wild Lotus',rarity:'covert',basePrice:130},
+    {weapon:'M4A4',skin:'Howl',rarity:'covert',basePrice:220},
+    {weapon:'AWP',skin:'Medusa',rarity:'classified',basePrice:18},
+    {weapon:'Desert Eagle',skin:'Blaze',rarity:'classified',basePrice:11},
+    {weapon:'AK-47',skin:'Fire Serpent',rarity:'classified',basePrice:14},
+    {weapon:'M4A1-S',skin:'Knight',rarity:'restricted',basePrice:4.5},
+    {weapon:'Glock-18',skin:'Fade',rarity:'restricted',basePrice:2.8},
+    {weapon:'AWP',skin:'Asiimov',rarity:'restricted',basePrice:3.2},
+    {weapon:'AK-47',skin:'Asiimov',rarity:'restricted',basePrice:2.5},
+    {weapon:'Nova',skin:'Antique',rarity:'milspec',basePrice:0.5},
+    {weapon:'P250',skin:'Vino Primo',rarity:'milspec',basePrice:0.4},
+    {weapon:'★ Karambit',skin:'Case Hardened',rarity:'gold',basePrice:950},
+    {weapon:'★ Butterfly Knife',skin:'Doppler',rarity:'gold',basePrice:600},
+  ]},
+  {id:'custom_degen',name:"Degen's Case",price:49.99,type:'custom',badge:'custom',
+   desc:"💀 Только хардкор · EV ~$28 · Повышенный дроп",weights:W_CUST,
+   contents:[
+    {weapon:'★ Karambit',skin:'Sapphire',rarity:'gold',basePrice:2200},
+    {weapon:'★ Butterfly Knife',skin:'Emerald',rarity:'gold',basePrice:2800},
+    {weapon:'★ M9 Bayonet',skin:'Ruby',rarity:'gold',basePrice:1800},
+    {weapon:'AWP',skin:'Dragon Lore FN',rarity:'covert',basePrice:220},
+    {weapon:'AK-47',skin:'Wild Lotus FN',rarity:'covert',basePrice:150},
+    {weapon:'M4A4',skin:'Howl MW',rarity:'classified',basePrice:22},
+    {weapon:'Desert Eagle',skin:'Blaze FN',rarity:'classified',basePrice:14},
+    {weapon:'AWP',skin:'Hyper Beast',rarity:'classified',basePrice:10},
+    {weapon:'AK-47',skin:'Fire Serpent FN',rarity:'restricted',basePrice:5},
+    {weapon:'M4A1-S',skin:'Printstream',rarity:'restricted',basePrice:7},
+    {weapon:'P250',skin:'Asiimov',rarity:'milspec',basePrice:0.6},
+    {weapon:'SSG 08',skin:'Blood in the Water',rarity:'milspec',basePrice:0.5},
+  ]},
+  {id:'custom_budget',name:'Budget Case',price:1.49,type:'custom',badge:'custom',
+   desc:'Для новичков · Хорошие шансы на restricted+',weights:W_CUST,
+   contents:[
+    {weapon:'AK-47',skin:'Jaguar',rarity:'classified',basePrice:5.5},
+    {weapon:'M4A4',skin:'Dragon King',rarity:'classified',basePrice:4.5},
+    {weapon:'AWP',skin:'Capillary',rarity:'classified',basePrice:4},
+    {weapon:'FAMAS',skin:'Styx',rarity:'restricted',basePrice:1.8},
+    {weapon:'P90',skin:'Grim',rarity:'restricted',basePrice:1.4},
+    {weapon:'Glock-18',skin:'Synth Leaf',rarity:'restricted',basePrice:1.1},
+    {weapon:'Desert Eagle',skin:'Urban Rubble',rarity:'restricted',basePrice:0.9},
+    {weapon:'Nova',skin:'Gila',rarity:'milspec',basePrice:0.35},
+    {weapon:'MP9',skin:'Deadly Poison',rarity:'milspec',basePrice:0.28},
+    {weapon:'Tec-9',skin:'Toxic',rarity:'milspec',basePrice:0.22},
+    {weapon:'SSG 08',skin:'Abyss',rarity:'consumer',basePrice:0.06},
+    {weapon:'FAMAS',skin:'Colony',rarity:'consumer',basePrice:0.05},
+  ]},
+  {id:'custom_nightmare',name:'Nightmare Case',price:19.99,type:'custom',badge:'custom',
+   desc:'🌙 Мрачные скины · Повышенный дроп',weights:W_CUST,
+   contents:[
+    {weapon:'AK-47',skin:'Wild Lotus',rarity:'covert',basePrice:130},
+    {weapon:'AWP',skin:'Medusa',rarity:'covert',basePrice:18},
+    {weapon:'M4A4',skin:'Howl',rarity:'classified',basePrice:22},
+    {weapon:'Desert Eagle',skin:'Blaze',rarity:'classified',basePrice:11},
+    {weapon:'USP-S',skin:'Neo-Noir',rarity:'classified',basePrice:9},
+    {weapon:'Glock-18',skin:'Fade',rarity:'restricted',basePrice:2.8},
+    {weapon:'AK-47',skin:'Fire Serpent',rarity:'restricted',basePrice:5},
+    {weapon:'M4A1-S',skin:'Hyper Beast',rarity:'restricted',basePrice:4},
+    {weapon:'SSG 08',skin:'Fever Dream',rarity:'milspec',basePrice:0.4},
+    {weapon:'Nova',skin:'Antique',rarity:'milspec',basePrice:0.35},
+    {weapon:'★ Karambit',skin:'Doppler',rarity:'gold',basePrice:420},
+    {weapon:'★ M9 Bayonet',skin:'Ruby',rarity:'gold',basePrice:1800},
+  ]},
+  {id:'custom_fire',name:'Fire Case',price:9.99,type:'custom',badge:'custom',
+   desc:'🔥 Огненные скины · Повышенный дроп',weights:W_CUST,
+   contents:[
+    {weapon:'AK-47',skin:'Fire Serpent',rarity:'covert',basePrice:55},
+    {weapon:'Desert Eagle',skin:'Blaze',rarity:'covert',basePrice:42},
+    {weapon:'M4A4',skin:'Howl',rarity:'classified',basePrice:22},
+    {weapon:'AWP',skin:'Mortis',rarity:'classified',basePrice:12},
+    {weapon:'AK-47',skin:'Neon Revolution',rarity:'classified',basePrice:8},
+    {weapon:'Glock-18',skin:'Fade',rarity:'restricted',basePrice:2.8},
+    {weapon:'P250',skin:'Asiimov',rarity:'restricted',basePrice:2},
+    {weapon:'Five-SeveN',skin:'Flame Test',rarity:'restricted',basePrice:1.6},
+    {weapon:'SSG 08',skin:'Abyss',rarity:'milspec',basePrice:0.3},
+    {weapon:'MP7',skin:'Mischief',rarity:'milspec',basePrice:0.25},
+    {weapon:'★ Karambit',skin:'Case Hardened',rarity:'gold',basePrice:950},
+    {weapon:'★ Butterfly Knife',skin:'Fade',rarity:'gold',basePrice:700},
+  ]},
   {id:'custom_cyber',name:'Cyber Case',price:14.99,type:'custom',badge:'custom',
-   desc:'💻 Киберпанк · EV ~$9',weights:W_CUST,
+   desc:'💻 Киберпанк · Повышенный дроп',weights:W_CUST,
    contents:[
     {weapon:'AK-47',skin:'Asiimov',rarity:'covert',basePrice:55},
     {weapon:'AWP',skin:'Hyper Beast',rarity:'covert',basePrice:40},
+    {weapon:'M4A1-S',skin:'Printstream',rarity:'classified',basePrice:18},
     {weapon:'M4A4',skin:'Desolate Space',rarity:'classified',basePrice:16},
     {weapon:'Glock-18',skin:'Neon',rarity:'classified',basePrice:11},
     {weapon:'Desert Eagle',skin:'Cobalt Disruption',rarity:'classified',basePrice:8},
     {weapon:'P90',skin:'Death by Kitty',rarity:'restricted',basePrice:3.5},
     {weapon:'UMP-45',skin:'Primal Saber',rarity:'restricted',basePrice:2.4},
+    {weapon:'AUG',skin:'Triqua',rarity:'restricted',basePrice:1.8},
     {weapon:'MP7',skin:'Skulls',rarity:'milspec',basePrice:0.5},
     {weapon:'SSG 08',skin:'Abyss',rarity:'milspec',basePrice:0.35},
     {weapon:'★ Karambit',skin:'Autotronic',rarity:'gold',basePrice:720},
     {weapon:'★ M9 Bayonet',skin:'Doppler',rarity:'gold',basePrice:380},
   ]},
   {id:'custom_ice',name:'Ice Cold Case',price:7.99,type:'custom',badge:'custom',
-   desc:'🧊 Ледяные скины · EV ~$4.5',weights:W_CUST,
+   desc:'🧊 Ледяные скины · Повышенный дроп',weights:W_CUST,
    contents:[
     {weapon:'AK-47',skin:'Ice Coaled',rarity:'covert',basePrice:22},
     {weapon:'M4A1-S',skin:'Icecap',rarity:'covert',basePrice:18},
     {weapon:'AWP',skin:'Chromatic Aberration',rarity:'classified',basePrice:9},
     {weapon:'Glock-18',skin:'Winterized',rarity:'classified',basePrice:6},
     {weapon:'Desert Eagle',skin:'Light Rail',rarity:'classified',basePrice:5},
+    {weapon:'USP-S',skin:'Orion',rarity:'classified',basePrice:8},
     {weapon:'MP5-SD',skin:'Condition Zero',rarity:'restricted',basePrice:2},
     {weapon:'P250',skin:'Visions',rarity:'restricted',basePrice:1.5},
+    {weapon:'Five-SeveN',skin:'Icy Pusher',rarity:'restricted',basePrice:1.2},
     {weapon:'Nova',skin:'Clear Polymer',rarity:'milspec',basePrice:0.4},
     {weapon:'Tec-9',skin:'Decimator',rarity:'milspec',basePrice:0.30},
-    {weapon:'FAMAS',skin:'Colony',rarity:'consumer',basePrice:0.08},
     {weapon:'★ Navaja Knife',skin:'Doppler',rarity:'gold',basePrice:260},
     {weapon:'★ Paracord Knife',skin:'Fade',rarity:'gold',basePrice:200},
   ]},
   {id:'custom_rainbow',name:'Rainbow Case',price:4.99,type:'custom',badge:'custom',
-   desc:'🌈 Яркие краски · EV ~$2.8',weights:W_CUST,
+   desc:'🌈 Яркие краски · Повышенный дроп',weights:W_CUST,
    contents:[
     {weapon:'M4A4',skin:'In Living Color',rarity:'covert',basePrice:18},
     {weapon:'Glock-18',skin:'Synth Leaf',rarity:'covert',basePrice:14},
     {weapon:'Desert Eagle',skin:'Trigger Discipline',rarity:'classified',basePrice:6},
     {weapon:'AWP',skin:'Fever Dream',rarity:'classified',basePrice:5},
     {weapon:'AK-47',skin:'Phantom Disruptor',rarity:'classified',basePrice:4.5},
+    {weapon:'M4A1-S',skin:'Basilisk',rarity:'classified',basePrice:5.5},
     {weapon:'P90',skin:'Baroque Red',rarity:'restricted',basePrice:2},
     {weapon:'Five-SeveN',skin:'Angry Mob',rarity:'restricted',basePrice:1.6},
     {weapon:'UMP-45',skin:'Gold Bismuth',rarity:'restricted',basePrice:1.2},
@@ -867,7 +1108,7 @@ const CASES = [
     {weapon:'★ Shadow Daggers',skin:'Doppler',rarity:'gold',basePrice:90},
   ]},
   {id:'custom_veterans',name:"Veteran's Case",price:34.99,type:'custom',badge:'custom',
-   desc:'🏅 Легендарные скины · EV ~$20',weights:W_CUST,
+   desc:"🏅 Легендарные скины · Повышенный дроп",weights:W_CUST,
    contents:[
     {weapon:'AWP',skin:'Dragon Lore',rarity:'covert',basePrice:220},
     {weapon:'M4A4',skin:'Howl',rarity:'covert',basePrice:280},
@@ -877,6 +1118,7 @@ const CASES = [
     {weapon:'Desert Eagle',skin:'Blaze',rarity:'classified',basePrice:14},
     {weapon:'M4A1-S',skin:'Knight',rarity:'restricted',basePrice:6},
     {weapon:'Glock-18',skin:'Fade',rarity:'restricted',basePrice:4},
+    {weapon:'USP-S',skin:'Kill Confirmed',rarity:'restricted',basePrice:5},
     {weapon:'P250',skin:'Vino Primo',rarity:'milspec',basePrice:0.6},
     {weapon:'SSG 08',skin:'Blood in the Water',rarity:'milspec',basePrice:0.5},
     {weapon:'★ Karambit',skin:'Sapphire',rarity:'gold',basePrice:2800},
@@ -927,6 +1169,7 @@ function doLogin() {
   initWheel();
   checkDailySpins();
   initUpgrade();
+  initAdmin();
 }
 
 function logout() {
@@ -964,6 +1207,7 @@ function showPage(name, btn) {
   btn.classList.add('active');
   if(name==='inventory') renderInv();
   if(name==='upgrade') { renderUpgradeSlots(); renderUpgFrom(); }
+  if(name==='admin' && isAdmin()) renderAdminPage();
 }
 
 // ═══════════════════════════════════════
@@ -1660,6 +1904,225 @@ function grantWheelPrize(idx) {
   toast(`🎡 ${msg}`,'gold');
   document.getElementById('wheelResultVal').textContent=msg;
   document.getElementById('wheelResultBox').style.display='block';
+}
+
+// ═══════════════════════════════════════
+//  ADMIN PANEL
+// ═══════════════════════════════════════
+const ADMIN_USER = 'PawPaw69';
+let adminLog = [];
+let adminSelectedSkinData = null;
+
+function isAdmin() { return currentUser && currentUser.name === ADMIN_USER; }
+
+function initAdmin() {
+  if(!isAdmin()) return;
+  document.getElementById('adminTab').style.display = 'block';
+}
+
+function renderAdminPage() {
+  if(!isAdmin()) return;
+  renderAdminStats();
+  renderAdminUsers();
+  renderAdminLog();
+  renderAdminSkinSearch();
+  // setup autocomplete for all user inputs
+  ['adminMoneyUser','adminSkinUser','adminSetBalUser','adminInvUser','adminSpinUser'].forEach(id => {
+    const inp = document.getElementById(id);
+    if(!inp) return;
+    const suggId = id.replace('User','Sugg').replace('adminMoney','adminMoney').replace('adminSkin','adminSkin').replace('adminSetBal','adminSetBal').replace('adminInv','adminInv').replace('adminSpin','adminSpin');
+    const suggEl = inp.parentElement.querySelector('.admin-user-suggestions');
+    if(!suggEl) return;
+    inp.oninput = () => {
+      const q = inp.value.toLowerCase();
+      const users = Object.values(DB);
+      const matches = users.filter(u => u.name.toLowerCase().includes(q)).slice(0,8);
+      if(!matches.length || !q) { suggEl.classList.remove('open'); return; }
+      suggEl.innerHTML = matches.map(u =>
+        `<div class="admin-sugg-item" onclick="fillAdminUser('${inp.id}','${u.name}')">
+          <span>${u.name}</span><span class="asi-bal">$${(u.balance||0).toFixed(2)}</span>
+        </div>`).join('');
+      suggEl.classList.add('open');
+    };
+    inp.onblur = () => setTimeout(() => suggEl.classList.remove('open'), 200);
+  });
+}
+
+function fillAdminUser(inputId, name) {
+  document.getElementById(inputId).value = name;
+  const inp = document.getElementById(inputId);
+  const suggEl = inp.parentElement.querySelector('.admin-user-suggestions');
+  if(suggEl) suggEl.classList.remove('open');
+}
+
+function renderAdminStats() {
+  const users = Object.values(DB);
+  const totalUsers = users.length;
+  const totalMoney = users.reduce((s,u) => s+(u.balance||0), 0);
+  const totalItems = users.reduce((s,u) => s+(u.inventory||[]).length, 0);
+  const totalItemVal = users.reduce((s,u) => s+(u.inventory||[]).reduce((ss,i) => ss+i.price,0), 0);
+  document.getElementById('adminStatsRow').innerHTML = `
+    <div class="admin-stat-card"><div class="asc-val">${totalUsers}</div><div class="asc-lbl">ПОЛЬЗОВАТЕЛЕЙ</div></div>
+    <div class="admin-stat-card"><div class="asc-val">$${totalMoney.toFixed(0)}</div><div class="asc-lbl">БАЛАНС ВСЕГО</div></div>
+    <div class="admin-stat-card"><div class="asc-val">${totalItems}</div><div class="asc-lbl">СКИНОВ ВСЕГО</div></div>
+    <div class="admin-stat-card"><div class="asc-val">$${totalItemVal.toFixed(0)}</div><div class="asc-lbl">СТОИМОСТЬ ИНВЕНТАРЕЙ</div></div>
+  `;
+}
+
+function renderAdminUsers() {
+  const list = document.getElementById('adminUsersList');
+  const users = Object.values(DB).sort((a,b)=>(b.balance||0)-(a.balance||0));
+  list.innerHTML = users.map(u => {
+    const invVal = (u.inventory||[]).reduce((s,i)=>s+i.price,0);
+    return `<div class="admin-user-row">
+      <div class="aur-name">${u.name}${u.name===ADMIN_USER?' 🛡️':''}</div>
+      <div class="aur-bal">$${(u.balance||0).toFixed(2)}</div>
+      <div class="aur-info">Скинов: ${(u.inventory||[]).length} · $${invVal.toFixed(2)}</div>
+      <div class="aur-info">Спинов: ${u.wheelSpins||0}</div>
+    </div>`;
+  }).join('');
+}
+
+function renderAdminLog() {
+  const el = document.getElementById('adminLog');
+  if(!adminLog.length) { el.innerHTML = '<div style="color:var(--text2);font-size:12px;padding:8px 0">Лог пуст</div>'; return; }
+  el.innerHTML = adminLog.slice().reverse().map(e =>
+    `<div class="admin-log-entry ${e.ok?'success':'error'}">
+      <span class="ale-time">${e.time}</span>
+      <span class="ale-action">${e.action}</span>
+      ${e.target ? `<span style="color:var(--text2)"> → </span><span class="ale-target">${e.target}</span>` : ''}
+    </div>`).join('');
+}
+
+function addAdminLog(action, target, ok=true) {
+  const now = new Date();
+  const time = now.toLocaleTimeString('ru',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  adminLog.push({time, action, target, ok});
+  if(adminLog.length > 100) adminLog.shift();
+  renderAdminLog();
+}
+
+function clearAdminLog() { adminLog = []; renderAdminLog(); }
+
+function renderAdminSkinSearch() {
+  const q = (document.getElementById('adminSkinSearch')?.value||'').toLowerCase();
+  const catalog = buildSkinCatalog();
+  const filtered = catalog.filter(s =>
+    !q || s.weapon.toLowerCase().includes(q) || s.skin.toLowerCase().includes(q)
+  ).slice(0, 60);
+  const grid = document.getElementById('adminSkinSelect');
+  if(!grid) return;
+  grid.innerHTML = filtered.map((s,i) => `
+    <div class="admin-skin-opt rc-${s.rarity}" style="border-color:var(--rc-${s.rarity})"
+         onclick="selectAdminSkin(${i},'${s.weapon.replace(/'/g,"\\'")}','${s.skin.replace(/'/g,"\\'")}','${s.rarity}',${s.price})">
+      <div class="aso-name">${s.weapon}</div>
+      <div class="aso-name">${s.skin}</div>
+      <div class="aso-price" style="color:var(--rc-${s.rarity})">$${s.price.toFixed(2)}</div>
+    </div>`).join('');
+}
+
+function selectAdminSkin(idx, weapon, skin, rarity, price) {
+  adminSelectedSkinData = {weapon, skin, rarity, price};
+  document.querySelectorAll('.admin-skin-opt').forEach((el,i) => {
+    el.classList.toggle('selected', i===idx);
+  });
+  const el = document.getElementById('adminSelectedSkin');
+  el.style.display = 'block';
+  el.innerHTML = `<div style="font-size:10px;color:var(--text2);margin-bottom:3px">${weapon}</div>
+    <div class="ass-name">${skin}</div>
+    <div class="ass-price" style="color:var(--rc-${rarity})">$${price.toFixed(2)}</div>`;
+}
+
+function setAdminMoney(v) { document.getElementById('adminMoneyAmt').value = v; }
+
+function adminGetUser(inputId) {
+  const name = document.getElementById(inputId).value.trim();
+  if(!name) { toast('Введи имя пользователя','error'); return null; }
+  const user = DB[name];
+  if(!user) { toast(`Пользователь "${name}" не найден`,'error'); addAdminLog(`Пользователь не найден: ${name}`,'',false); return null; }
+  return user;
+}
+
+function adminGiveMoney() {
+  const user = adminGetUser('adminMoneyUser'); if(!user) return;
+  const amt = parseFloat(document.getElementById('adminMoneyAmt').value);
+  if(isNaN(amt)||amt<=0) { toast('Неверная сумма','error'); return; }
+  user.balance = +(user.balance + amt).toFixed(2);
+  if(user.name === currentUser?.name) { currentUser.balance = user.balance; updateBalance(); }
+  saveDB();
+  toast(`✅ ${user.name} получил $${amt.toFixed(2)}`,'success');
+  addAdminLog(`Выдано $${amt.toFixed(2)}`, user.name);
+  renderAdminStats(); renderAdminUsers();
+}
+
+function adminGiveSkin() {
+  const user = adminGetUser('adminSkinUser'); if(!user) return;
+  if(!adminSelectedSkinData) { toast('Выбери скин из каталога','error'); return; }
+  const s = adminSelectedSkinData;
+  const newSkin = {
+    id: Date.now()+Math.random(), weapon:s.weapon, skin:s.skin, rarity:s.rarity,
+    wear: WEAR_NAMES[2], wearShort: WEAR_SHORT[2],
+    float: (Math.random()*(0.38-0.15)+0.15).toFixed(4),
+    price: s.price, from:'Admin'
+  };
+  user.inventory = user.inventory||[];
+  user.inventory.push(newSkin);
+  if(user.name === currentUser?.name) { currentUser.inventory.push(newSkin); renderInv(); }
+  saveDB();
+  toast(`✅ ${user.name} получил ${s.weapon} | ${s.skin}`,'gold');
+  addAdminLog(`Выдан скин: ${s.weapon} | ${s.skin} ($${s.price.toFixed(2)})`, user.name);
+  renderAdminStats(); renderAdminUsers();
+}
+
+function adminSetBalance() {
+  const user = adminGetUser('adminSetBalUser'); if(!user) return;
+  const amt = parseFloat(document.getElementById('adminSetBalAmt').value);
+  if(isNaN(amt)||amt<0) { toast('Неверная сумма','error'); return; }
+  const old = user.balance;
+  user.balance = +amt.toFixed(2);
+  if(user.name === currentUser?.name) { currentUser.balance = user.balance; updateBalance(); }
+  saveDB();
+  toast(`✅ Баланс ${user.name}: $${old.toFixed(2)} → $${amt.toFixed(2)}`,'success');
+  addAdminLog(`Баланс установлен $${old.toFixed(2)}→$${amt.toFixed(2)}`, user.name);
+  renderAdminStats(); renderAdminUsers();
+}
+
+function adminClearInv() {
+  const user = adminGetUser('adminInvUser'); if(!user) return;
+  const cnt = (user.inventory||[]).length;
+  if(!confirm(`Очистить инвентарь (${cnt} скинов) у ${user.name}?`)) return;
+  user.inventory = [];
+  if(user.name === currentUser?.name) { currentUser.inventory = []; renderInv(); }
+  saveDB();
+  toast(`✅ Инвентарь ${user.name} очищен (${cnt} скинов удалено)`,'success');
+  addAdminLog(`Инвентарь очищен (${cnt} скинов)`, user.name);
+  renderAdminStats(); renderAdminUsers();
+  document.getElementById('adminInvPreview').style.display='none';
+}
+
+function adminViewInv() {
+  const user = adminGetUser('adminInvUser'); if(!user) return;
+  const inv = user.inventory||[];
+  const preview = document.getElementById('adminInvPreview');
+  if(!inv.length) { preview.style.display='block'; preview.innerHTML='<div style="color:var(--text2);font-size:12px">Инвентарь пуст</div>'; return; }
+  preview.style.display='block';
+  preview.innerHTML = inv.slice(0,20).map(i =>
+    `<div style="display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid var(--border);font-size:12px">
+      <span style="color:var(--rc-${i.rarity})">${i.weapon} | ${i.skin}</span>
+      <span style="font-family:Orbitron,monospace;font-size:11px;color:var(--accent)">$${i.price.toFixed(2)}</span>
+    </div>`).join('') + (inv.length>20 ? `<div style="color:var(--text2);font-size:11px;margin-top:4px">...и ещё ${inv.length-20} скинов</div>` : '');
+}
+
+function adminGiveSpins() {
+  const user = adminGetUser('adminSpinUser'); if(!user) return;
+  const amt = parseInt(document.getElementById('adminSpinAmt').value)||0;
+  if(amt<1) { toast('Мин. 1 спин','error'); return; }
+  user.wheelSpins = (user.wheelSpins||0) + amt;
+  if(user.name === currentUser?.name) { currentUser.wheelSpins = user.wheelSpins; updateSpinsDisplay(); }
+  saveDB();
+  toast(`✅ ${user.name} получил ${amt} спинов колеса`,'success');
+  addAdminLog(`Выдано ${amt} спинов`, user.name);
+  renderAdminUsers();
 }
 
 // ═══════════════════════════════════════
