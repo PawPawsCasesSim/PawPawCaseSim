@@ -10,15 +10,15 @@
 <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
 <style>
 /* ── DROP TICKER ── */
-#dropTicker{position:fixed;top:0;left:0;right:0;height:36px;background:rgba(8,9,13,.96);border-bottom:1px solid rgba(228,174,57,.2);z-index:9100;display:flex;align-items:center;overflow:hidden;backdrop-filter:blur(8px)}
-#dropTicker.hidden{display:none}
-.ticker-inner{display:flex;gap:0;white-space:nowrap;animation:tickerScroll 40s linear infinite}
+#dropTicker{width:100%;height:32px;background:rgba(8,9,13,.98);border-bottom:1px solid rgba(228,174,57,.25);display:flex;align-items:center;overflow:hidden;flex-shrink:0;position:sticky;top:0;z-index:9100}
+.ticker-inner{display:flex;gap:0;white-space:nowrap;animation:tickerScroll 60s linear infinite;flex-shrink:0}
+.ticker-inner:hover{animation-play-state:paused}
 @keyframes tickerScroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
-.ticker-item{display:inline-flex;align-items:center;gap:8px;padding:0 24px;font-size:12px;border-right:1px solid var(--border)}
-.ticker-item .ti-user{color:var(--accent);font-weight:700}
-.ticker-item .ti-skin{color:#fff;font-weight:600}
-.ticker-item .ti-price{font-family:Orbitron,monospace;font-size:11px;font-weight:700}
-.ticker-lbl{flex-shrink:0;font-size:10px;font-family:Orbitron,monospace;color:var(--text2);letter-spacing:1px;padding:0 12px;border-right:1px solid var(--border)}
+.ticker-item{display:inline-flex;align-items:center;gap:6px;padding:0 18px;font-size:12px;border-right:1px solid rgba(255,255,255,.06);height:32px}
+.ticker-item .ti-user{color:var(--accent);font-weight:700;font-size:11px}
+.ticker-item .ti-skin{color:#fff;font-weight:600;font-size:12px}
+.ticker-item .ti-price{font-family:Orbitron,monospace;font-size:10px;font-weight:700}
+.ticker-lbl{flex-shrink:0;font-size:9px;font-family:Orbitron,monospace;color:var(--accent);letter-spacing:1px;padding:0 10px;border-right:1px solid rgba(228,174,57,.3);height:32px;display:flex;align-items:center}
 :root{
   --bg:#08090d;--bg2:#0f1118;--bg3:#171b24;--bg4:#1e2330;
   --accent:#e4ae39;--accent2:#f5c842;
@@ -31,9 +31,30 @@
 html,body{min-height:100vh;background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-serif;overflow-x:hidden}
 ::-webkit-scrollbar{width:5px;height:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--bg4);border-radius:3px}
 
-/* ── LOGIN ── */
+/* ── LOGIN FIX ── */
 #loginScreen{position:fixed;inset:0;background:linear-gradient(135deg,#08090d 0%,#0d1020 50%,#08090d 100%);z-index:9000;display:flex;align-items:center;justify-content:center;flex-direction:column}
-#loginScreen::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 40%,rgba(228,174,57,.07) 0%,transparent 70%);pointer-events:none}
+
+/* ── TOP PLAYERS ── */
+.top-tab{padding:7px 18px;border-radius:20px;border:1px solid var(--border);background:var(--bg2);color:var(--text2);cursor:pointer;font-family:'Rajdhani',sans-serif;font-size:13px;font-weight:600;transition:all .15s}
+.top-tab.active,.top-tab:hover{border-color:var(--accent);color:var(--accent);background:rgba(228,174,57,.08)}
+.top-list{display:flex;flex-direction:column;gap:8px}
+.top-row{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:14px 18px;display:flex;align-items:center;gap:16px;transition:all .15s}
+.top-row:hover{border-color:var(--border);transform:translateX(4px)}
+.top-rank{font-family:Orbitron,monospace;font-size:20px;font-weight:900;min-width:40px;text-align:center}
+.top-rank-1{color:#ffd700}.top-rank-2{color:#c0c0c0}.top-rank-3{color:#cd7f32}.top-rank-n{color:var(--text2)}
+.top-name{font-size:16px;font-weight:700;color:#fff;flex:1}
+.top-name-you{color:var(--accent)}
+.top-val{font-family:Orbitron,monospace;font-size:15px;font-weight:700;text-align:right}
+.top-sub{font-size:11px;color:var(--text2);text-align:right;margin-top:2px}
+.top-drop-item{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:12px 16px;display:flex;align-items:center;gap:14px;margin-bottom:8px}
+.tdi-rarity{width:6px;height:40px;border-radius:3px;flex-shrink:0}
+.tdi-info{flex:1}
+.tdi-user{font-size:12px;font-weight:700;color:var(--accent);margin-bottom:2px}
+.tdi-skin{font-size:13px;font-weight:700;color:#fff;margin-bottom:1px}
+.tdi-wear{font-size:11px;color:var(--text2)}
+.tdi-price{font-family:Orbitron,monospace;font-size:14px;font-weight:700;text-align:right}
+.tdi-time{font-size:10px;color:var(--text2);text-align:right;margin-top:2px}
+.top-empty{text-align:center;padding:40px 20px;color:var(--text2);font-size:14px}
 .login-box{background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:48px 40px;width:400px;text-align:center;position:relative;box-shadow:0 0 80px rgba(0,0,0,.6)}
 .login-logo{font-family:'Orbitron',monospace;font-size:28px;font-weight:900;color:var(--accent);letter-spacing:3px;margin-bottom:6px;text-shadow:0 0 30px rgba(228,174,57,.4)}
 .login-logo span{color:#fff}
@@ -45,7 +66,7 @@ html,body{min-height:100vh;background:var(--bg);color:var(--text);font-family:'R
 .login-hint{margin-top:16px;font-size:13px;color:var(--text2);line-height:1.6}
 
 /* ── HEADER ── */
-.header{background:rgba(8,9,13,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 20px;display:flex;align-items:center;justify-content:space-between;height:60px;position:sticky;top:36px;z-index:200}
+.header{background:rgba(8,9,13,.98);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 20px;display:flex;align-items:center;justify-content:space-between;height:58px;position:sticky;top:32px;z-index:300}
 /* admin tab only visible for PawPaw69 - controlled by JS */
 .logo{font-family:'Orbitron',monospace;font-weight:900;font-size:18px;color:var(--accent);letter-spacing:2px;text-shadow:0 0 20px rgba(228,174,57,.35)}
 .logo span{color:#fff}
@@ -59,7 +80,7 @@ html,body{min-height:100vh;background:var(--bg);color:var(--text);font-family:'R
 .add1-btn:hover{border-color:var(--green);color:var(--green)}
 
 /* ── NAV ── */
-.nav{display:flex;gap:2px;padding:12px 20px 0;background:var(--bg);border-bottom:1px solid var(--border);overflow-x:auto}
+.nav{display:flex;gap:2px;padding:12px 20px 0;background:var(--bg);border-bottom:1px solid var(--border);overflow-x:auto;position:sticky;top:90px;z-index:290}
 .nav-tab{padding:9px 18px;border-radius:8px 8px 0 0;cursor:pointer;font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:600;letter-spacing:.5px;color:var(--text2);border:1px solid transparent;border-bottom:none;transition:all .2s;white-space:nowrap;background:transparent;position:relative;bottom:-1px}
 .nav-tab.active{background:var(--bg2);color:var(--accent);border-color:var(--border);border-bottom-color:var(--bg2)}
 .nav-tab:hover:not(.active){color:var(--text)}
@@ -310,17 +331,8 @@ html,body{min-height:100vh;background:var(--bg);color:var(--text);font-family:'R
 </head>
 <body>
 
-<!-- DROP TICKER -->
-<div id="dropTicker">
-  <div class="ticker-lbl">🔥 ДРОП</div>
-  <div class="ticker-inner" id="tickerInner">
-    <span class="ticker-item"><span class="ti-user">—</span><span class="ti-skin">Загрузка...</span></span>
-    <span class="ticker-item"><span class="ti-user">—</span><span class="ti-skin">Загрузка...</span></span>
-  </div>
-</div>
-
 <!-- LOGIN SCREEN -->
-<div id="loginScreen" style="padding-top:36px">
+<div id="loginScreen">
   <div class="login-box">
     <div class="login-logo">CS2<span>CASES</span></div>
     <div class="login-sub">СИМУЛЯТОР КЕЙСОВ</div>
@@ -340,6 +352,14 @@ html,body{min-height:100vh;background:var(--bg);color:var(--text);font-family:'R
 
 <!-- APP -->
 <div id="app" style="display:none">
+<!-- DROP TICKER (inside app flow) -->
+<div id="dropTicker">
+  <div class="ticker-lbl">🔥 ДРОПЫ</div>
+  <div class="ticker-inner" id="tickerInner">
+    <span class="ticker-item"><span class="ti-user">CS2CASES</span><span class="ti-skin" style="color:var(--text2)">Открывай кейсы и выбивай топ скины!</span></span>
+    <span class="ticker-item"><span class="ti-user">CS2CASES</span><span class="ti-skin" style="color:var(--text2)">Открывай кейсы и выбивай топ скины!</span></span>
+  </div>
+</div>
 <div class="header">
   <div class="logo">CS2<span>CASES</span></div>
   <div class="hdr-right">
@@ -358,6 +378,7 @@ html,body{min-height:100vh;background:var(--bg);color:var(--text);font-family:'R
   <button class="nav-tab" data-page="upgrade" onclick="showPage('upgrade',this)">⬆️ Upgrade</button>
   <button class="nav-tab" data-page="crash" onclick="showPage('crash',this)">📈 Crash</button>
   <button class="nav-tab" data-page="wheel" onclick="showPage('wheel',this)">🎡 Колесо</button>
+  <button class="nav-tab" data-page="top" onclick="showPage('top',this)">🏆 Топ</button>
   <button class="nav-tab admin-tab" id="adminTab" data-page="admin" onclick="showPage('admin',this)" style="display:none">🛡️ Админ</button>
 </div>
 
@@ -495,6 +516,20 @@ html,body{min-height:100vh;background:var(--bg);color:var(--text);font-family:'R
       <div class="wheel-result-val" id="wheelResultVal"></div>
     </div>
   </div>
+</div>
+
+<!-- TOP PLAYERS PAGE -->
+<div class="page" id="page-top">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:10px">
+    <div class="section-title" style="margin-bottom:0">🏆 ТОП <span>ИГРОКОВ</span></div>
+    <button class="btn btn-ghost" onclick="loadTopPlayers()" style="font-size:12px;padding:6px 14px">🔄 Обновить</button>
+  </div>
+  <div class="top-tabs" style="display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap">
+    <button class="top-tab active" onclick="setTopTab('balance',this)">💰 По балансу</button>
+    <button class="top-tab" onclick="setTopTab('inventory',this)">💎 По инвентарю</button>
+    <button class="top-tab" onclick="setTopTab('drops',this)">🔥 Последние дропы</button>
+  </div>
+  <div id="topContent"></div>
 </div>
 
 <!-- ADMIN PANEL (PawPaw69 only) -->
@@ -1191,8 +1226,8 @@ const CASES = [
     {weapon:'AK-47',skin:'Asiimov',rarity:'restricted',basePrice:4},
     {weapon:'M4A4',skin:'Poseidon',rarity:'milspec',basePrice:1.2},
   ]},
-  {id:'custom_knife_box',name:'Knife Box',price:149.99,type:'custom',badge:'custom',
-   desc:'🔪 Только ножи · 100% нож · Шанс на топ',weights:{consumer:0,industrial:0,milspec:0,restricted:0,classified:0,covert:0,gold:100},
+  {id:'custom_knife_box',name:'Knife Box',price:349.99,type:'custom',badge:'custom',
+   desc:'🔪 100% нож · Шанс на топ blade · $349.99',weights:{consumer:0,industrial:0,milspec:0,restricted:0,classified:0,covert:0,gold:100},
    contents:[
     {weapon:'★ Karambit',skin:'Doppler',rarity:'gold',basePrice:580},
     {weapon:'★ Karambit',skin:'Fade',rarity:'gold',basePrice:820},
@@ -1213,8 +1248,8 @@ const CASES = [
     {weapon:'★ Shadow Daggers',skin:'Doppler',rarity:'gold',basePrice:90},
     {weapon:'★ Ursus Knife',skin:'Doppler',rarity:'gold',basePrice:210},
   ]},
-  {id:'custom_sapphire',name:'Gem Case',price:299.99,type:'custom',badge:'custom',
-   desc:'💠 Сапфиры, Рубины, Изумруды · Мечта коллекционера',weights:{consumer:0,industrial:0,milspec:0,restricted:0,classified:5,covert:20,gold:75},
+  {id:'custom_sapphire',name:'Gem Case',price:499.99,type:'custom',badge:'custom',
+   desc:'💠 Сапфиры · Рубины · Изумруды · $499.99',weights:{consumer:0,industrial:0,milspec:0,restricted:0,classified:5,covert:20,gold:75},
    contents:[
     {weapon:'★ Karambit',skin:'Sapphire',rarity:'gold',basePrice:2800},
     {weapon:'★ Karambit',skin:'Ruby',rarity:'gold',basePrice:2500},
@@ -1279,13 +1314,16 @@ function initFirebase() {
     fbUsersRef = fbDb.ref('users');
     fbDropsRef = fbDb.ref('drops');
     useFirebase = true;
-    // Listen for real-time drops
-    fbDropsRef.limitToLast(30).on('value', snap => {
+    // Listen for real-time drops - update ticker whenever new drops come in
+    fbDropsRef.limitToLast(40).on('value', snap => {
       const drops = [];
-      snap.forEach(c => drops.push(c.val()));
-      renderDropTicker(drops.reverse());
+      snap.forEach(c => {
+        const v = c.val();
+        if(v && v.user && v.name) drops.push(v);
+      });
+      if(drops.length) renderDropTicker(drops.reverse()); // newest first
     });
-    console.log('Firebase connected');
+    console.log('Firebase connected ✓');
   } catch(e) {
     console.warn('Firebase init failed, using localStorage:', e.message);
     useFirebase = false;
@@ -1327,28 +1365,79 @@ async function fbLoad(name) {
   loadDB(); return DB[name] || null;
 }
 
-async function fbDropAnnounce(userName, skin) {
-  const drop = {
-    user: userName, weapon: skin.weapon, name: skin.skin,
-    rarity: skin.rarity, price: skin.price, wear: skin.wearShort,
-    ts: Date.now()
-  };
-  if(useFirebase) {
-    try { await fbDropsRef.push(drop); } catch(e){}
-  } else {
-    // local ticker fallback — store last 20 in localStorage
-    let localDrops = [];
-    try { localDrops = JSON.parse(localStorage.getItem('cs2drops')||'[]'); } catch(e){}
-    localDrops.unshift(drop);
-    localDrops = localDrops.slice(0,20);
-    localStorage.setItem('cs2drops', JSON.stringify(localDrops));
-    renderDropTicker(localDrops);
-  }
-}
-
 function saveUser() {
   if(!currentUser) return;
-  fbSave(currentUser); // async fire-and-forget
+  fbSave(currentUser); // async fire-and-forget, updates both Firebase and localStorage
+}
+
+async function fbDropAnnounce(userName, skin) {
+  const drop = {
+    user: userName,
+    weapon: skin.weapon,
+    name: skin.skin,
+    rarity: skin.rarity,
+    price: skin.price,
+    wear: skin.wearShort || '',
+    ts: Date.now()
+  };
+  if(useFirebase && fbDropsRef) {
+    try {
+      await fbDropsRef.push(drop);
+      // Firebase listener will update ticker automatically via the .on('value') listener
+      return;
+    } catch(e){ console.warn('fbDropAnnounce err', e); }
+  }
+  // localStorage fallback
+  let localDrops = [];
+  try { localDrops = JSON.parse(localStorage.getItem('cs2drops') || '[]'); } catch(e){}
+  localDrops.unshift(drop);
+  localDrops = localDrops.slice(0, 50);
+  localStorage.setItem('cs2drops', JSON.stringify(localDrops));
+  renderDropTicker(localDrops);
+}
+
+function renderDropTicker(drops) {
+  const inner = document.getElementById('tickerInner');
+  if(!inner) return;
+  if(!drops || !drops.length) {
+    inner.innerHTML = '<span class="ticker-item"><span class="ti-user">CS2CASES</span><span class="ti-skin" style="color:var(--text2)">Открывай кейсы и выбивай топ скины!</span></span><span class="ticker-item"><span class="ti-user">CS2CASES</span><span class="ti-skin" style="color:var(--text2)">Открывай кейсы и выбивай топ скины!</span></span>';
+    return;
+  }
+  const rcColors = {
+    consumer:'#b0c3d9', industrial:'#5e98d9', milspec:'#4b69ff',
+    restricted:'#8847ff', classified:'#d32ce6', covert:'#eb4b4b', gold:'#e4ae39'
+  };
+  // Sort by time, newest first
+  const sorted = [...drops].sort((a,b) => (b.ts||0)-(a.ts||0));
+  // Duplicate for seamless infinite scroll
+  const makeItems = (arr) => arr.map(d => {
+    const c = rcColors[d.rarity] || '#fff';
+    const timeAgo = d.ts ? formatTimeAgo(d.ts) : '';
+    return `<span class="ticker-item">
+      <span style="color:${c};font-size:10px">●</span>
+      <span class="ti-user">${escHtml(d.user)}</span>
+      <span style="color:var(--text2);font-size:11px">выбил</span>
+      <span class="ti-skin" style="color:${c}">${escHtml(d.weapon)} | ${escHtml(d.name)}</span>
+      <span class="ti-price" style="color:${c}">$${(+d.price).toFixed(2)}</span>
+      ${d.wear ? `<span style="font-size:10px;color:var(--text2)">${escHtml(d.wear)}</span>` : ''}
+      ${timeAgo ? `<span style="font-size:10px;color:var(--text2)">${timeAgo}</span>` : ''}
+    </span>`;
+  }).join('');
+  inner.innerHTML = makeItems(sorted) + makeItems(sorted);
+  // Adjust speed based on count
+  inner.style.animationDuration = Math.max(30, sorted.length * 5) + 's';
+}
+
+function escHtml(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function formatTimeAgo(ts) {
+  const s = Math.floor((Date.now() - ts) / 1000);
+  if(s < 60) return `${s}с`;
+  if(s < 3600) return `${Math.floor(s/60)}м`;
+  if(s < 86400) return `${Math.floor(s/3600)}ч`;
+  return `${Math.floor(s/86400)}д`;
 }
 
 // ─── LOGIN ───
@@ -1462,26 +1551,6 @@ function logout() {
 document.getElementById('loginInput').addEventListener('keydown', e => { if(e.key==='Enter') document.getElementById('loginPass').focus(); });
 document.getElementById('loginPass').addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
 
-// ─── DROP TICKER ───
-function renderDropTicker(drops) {
-  const inner = document.getElementById('tickerInner');
-  if(!drops || !drops.length) return;
-  const rcColors = {consumer:'#b0c3d9',industrial:'#5e98d9',milspec:'#4b69ff',restricted:'#8847ff',classified:'#d32ce6',covert:'#eb4b4b',gold:'#e4ae39'};
-  // Duplicate for seamless scroll
-  const items = [...drops, ...drops].map(d =>
-    `<span class="ticker-item">
-      <span class="ti-user">👤 ${d.user}</span>
-      <span style="color:var(--text2)">выбил</span>
-      <span class="ti-skin" style="color:${rcColors[d.rarity]||'#fff'}">${d.weapon} | ${d.name}</span>
-      <span class="ti-price" style="color:${rcColors[d.rarity]||'#fff'}">$${(+d.price).toFixed(2)}</span>
-      <span style="font-size:10px;color:var(--text2)">${d.wear||''}</span>
-    </span>`
-  ).join('');
-  inner.innerHTML = items;
-  // Adjust animation speed based on item count
-  inner.style.animationDuration = Math.max(20, drops.length * 4) + 's';
-}
-
 // ═══════════════════════════════════════
 //  BALANCE
 // ═══════════════════════════════════════
@@ -1544,6 +1613,7 @@ function showPage(name, btn) {
   if(name==='inventory') renderInv();
   if(name==='upgrade') { renderUpgradeSlots(); renderUpgFrom(); }
   if(name==='admin' && isAdmin()) renderAdminPage();
+  if(name==='top') loadTopPlayers();
 }
 
 // ═══════════════════════════════════════
@@ -1614,7 +1684,7 @@ function generateSkin(caseData) {
   const floatVal = (Math.random()*(b-a)+a).toFixed(4);
   const price = +(item.basePrice*WEAR_MULT[wIdx]*(0.85+Math.random()*.3)).toFixed(2);
   return {
-    id:Date.now()+Math.random(), weapon:item.weapon, skin:item.skin, rarity,
+    id: String(Date.now()) + '_' + Math.random().toString(36).slice(2), weapon:item.weapon, skin:item.skin, rarity,
     wear:WEAR_NAMES[wIdx], wearShort:WEAR_SHORT[wIdx], float:floatVal, price,
     from:caseData.name
   };
@@ -1688,77 +1758,82 @@ function spawnParticles(rarity) {
 }
 
 function showResults() {
-  const grid=document.getElementById('resultGrid');
-  grid.innerHTML=''; grid.classList.add('active');
+  const grid = document.getElementById('resultGrid');
+  grid.innerHTML = ''; grid.classList.add('active');
 
-  // AUTO-ADD all items to inventory immediately
+  // AUTO-ADD all items to inventory immediately (if not already there)
   resultItems.forEach(item => {
     if(!item.inInventory) {
       item.inInventory = true;
-      item.invIdx = currentUser.inventory.length;
       currentUser.inventory.push(item);
     }
   });
   saveUser();
   renderInv();
 
-  // Announce notable drops to ticker (restricted+ or price > $5)
+  // Announce drops to ticker — all items go to global feed
   resultItems.forEach(item => {
-    if(['restricted','classified','covert','gold'].includes(item.rarity) || item.price >= 5) {
-      fbDropAnnounce(currentUser.name, item);
-    }
+    fbDropAnnounce(currentUser.name, item);
   });
 
-  resultItems.forEach((item)=>{
-    const div=document.createElement('div');
-    div.className=`result-item rc-${item.rarity}`;
-    div.style.animationDelay=`${resultItems.indexOf(item)*.08}s`;
-    if(item.rarity==='gold') div.style.boxShadow='0 0 25px rgba(228,174,57,.3)';
-    if(item.rarity==='covert') div.style.boxShadow='0 0 25px rgba(235,75,75,.3)';
-    const imgSrc=imgOrSVG(item.weapon,item.skin,item.rarity);
-    // Find current inventory index (item is already in inventory)
-    const invIdx = currentUser.inventory.lastIndexOf(item);
-    div.innerHTML=`<img src="${imgSrc}" alt="${item.skin}" onerror="this.src='${skinSVG(item.weapon,item.skin,item.rarity)}'"><div class="ri-weapon">${item.weapon}</div><div class="ri-name-full">${item.skin}</div><div class="ri-wear-full">${item.wear} (${item.float})</div><div class="ri-price">$${item.price.toFixed(2)}</div>
-    <div style="font-size:10px;color:var(--green);margin-top:2px">✓ В инвентаре</div>
-    <button class="btn-sell-item" onclick="sellResultItemFromInv(this,${invIdx})">Продать $${item.price.toFixed(2)}</button>`;
+  resultItems.forEach(item => {
+    const div = document.createElement('div');
+    div.className = `result-item rc-${item.rarity}`;
+    div.style.animationDelay = `${resultItems.indexOf(item) * .08}s`;
+    if(item.rarity === 'gold') div.style.boxShadow = '0 0 25px rgba(228,174,57,.3)';
+    if(item.rarity === 'covert') div.style.boxShadow = '0 0 25px rgba(235,75,75,.3)';
+    const imgSrc = imgOrSVG(item.weapon, item.skin, item.rarity);
+    // Use item.id (unique per skin) to find and sell it
+    div.innerHTML = `<img src="${imgSrc}" alt="${item.skin}" onerror="this.src='${skinSVG(item.weapon,item.skin,item.rarity)}'">
+      <div class="ri-weapon">${item.weapon}</div>
+      <div class="ri-name-full">${item.skin}</div>
+      <div class="ri-wear-full">${item.wear} (${item.float})</div>
+      <div class="ri-price">$${item.price.toFixed(2)}</div>
+      <div style="font-size:10px;color:var(--green);margin-top:2px">✓ В инвентаре</div>
+      <button class="btn-sell-item" onclick="sellResultById('${item.id}',this)">Продать $${item.price.toFixed(2)}</button>`;
     grid.appendChild(div);
   });
   document.getElementById('resultActions').classList.add('active');
-  isOpening=false;
+  isOpening = false;
 }
 
+function sellResultById(itemId, btn) {
+  const idx = currentUser.inventory.findIndex(i => String(i.id) === String(itemId));
+  if(idx === -1) { btn.textContent = '✓ Уже продан'; btn.disabled = true; btn.style.opacity = '.5'; return; }
+  const item = currentUser.inventory[idx];
+  currentUser.balance = +(currentUser.balance + item.price).toFixed(2);
+  currentUser.inventory.splice(idx, 1);
+  updateBalance(); saveUser(); renderInv();
+  btn.textContent = '✓ Продано'; btn.disabled = true; btn.style.opacity = '.5';
+  toast(`Продано: ${item.skin} · $${item.price.toFixed(2)}`, 'success');
+}
+
+// Keep legacy refs working
 function sellResultItemFromInv(btn, invIdx) {
   const item = currentUser.inventory[invIdx];
   if(!item) { btn.textContent='✓ Уже продан'; btn.disabled=true; return; }
-  currentUser.balance=+(currentUser.balance+item.price).toFixed(2);
-  currentUser.inventory.splice(invIdx,1);
-  updateBalance(); saveUser(); renderInv();
-  btn.textContent='✓ Продано'; btn.disabled=true; btn.style.opacity='.5';
-  // Update other buttons in the results panel (indices shifted)
-  toast(`Продано: ${item.skin} · $${item.price.toFixed(2)}`,'success');
+  sellResultById(String(item.id), btn);
 }
 
 function sellAllResultsFromInv() {
-  // Sell all resultItems that are still in inventory
-  let tot=0, count=0;
+  let tot = 0, count = 0;
   resultItems.forEach(item => {
-    const idx = currentUser.inventory.indexOf(item);
+    const idx = currentUser.inventory.findIndex(i => String(i.id) === String(item.id));
     if(idx !== -1) {
       tot += item.price; count++;
-      currentUser.inventory.splice(idx,1);
+      currentUser.inventory.splice(idx, 1);
     }
   });
   if(count) {
-    currentUser.balance=+(currentUser.balance+tot).toFixed(2);
+    currentUser.balance = +(currentUser.balance + tot).toFixed(2);
     updateBalance(); saveUser(); renderInv();
-    toast(`Продано ${count} скинов за $${tot.toFixed(2)}`,'success');
+    toast(`Продано ${count} скинов за $${tot.toFixed(2)}`, 'success');
   }
-  document.querySelectorAll('.btn-sell-item').forEach(b=>{b.textContent='✓ Продано';b.disabled=true;b.style.opacity='.5';});
+  document.querySelectorAll('.btn-sell-item').forEach(b => { b.textContent = '✓ Продано'; b.disabled = true; b.style.opacity = '.5'; });
 }
-// Legacy stubs (may be called from old HTML)
-function sellResultItem(){}
-function sellAllResults(){ sellAllResultsFromInv(); }
-function keepAll(){ closeModal(); }
+function sellResultItem() {}
+function sellAllResults() { sellAllResultsFromInv(); }
+function keepAll() { closeModal(); }
 
 // ═══════════════════════════════════════
 //  INVENTORY
@@ -2051,6 +2126,144 @@ async function doUpgrade() {
   btn.disabled=false;
 }
 
+
+// ═══════════════════════════════════════
+//  TOP PLAYERS
+// ═══════════════════════════════════════
+let topTab = 'balance';
+
+function setTopTab(tab, btn) {
+  topTab = tab;
+  document.querySelectorAll('.top-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  loadTopPlayers();
+}
+
+async function loadTopPlayers() {
+  const el = document.getElementById('topContent');
+  if(!el) return;
+  el.innerHTML = '<div class="top-empty">⏳ Загрузка...</div>';
+
+  // Fetch all users
+  let users = [];
+  if(useFirebase && fbUsersRef) {
+    try {
+      const snap = await fbUsersRef.once('value');
+      snap.forEach(c => { const u = c.val(); if(u && u.name) users.push(u); });
+      // Update local cache
+      users.forEach(u => { DB[u.name] = u; });
+      saveDB();
+    } catch(e) { console.warn('Top load FB err', e); }
+  }
+  // Fallback or supplement with local DB
+  if(!users.length) {
+    users = Object.values(DB).filter(u => u && u.name);
+  }
+
+  if(topTab === 'balance') {
+    renderTopBalance(users);
+  } else if(topTab === 'inventory') {
+    renderTopInventory(users);
+  } else if(topTab === 'drops') {
+    renderTopDrops();
+  }
+}
+
+function renderTopBalance(users) {
+  const el = document.getElementById('topContent');
+  const sorted = users.slice().sort((a,b) => (b.balance||0) - (a.balance||0));
+  if(!sorted.length) { el.innerHTML = '<div class="top-empty">Нет игроков</div>'; return; }
+  const ranks = ['🥇','🥈','🥉'];
+  const rankClass = i => i===0?'top-rank-1':i===1?'top-rank-2':i===2?'top-rank-3':'top-rank-n';
+  el.innerHTML = '<div class="top-list">' +
+    sorted.map((u, i) => {
+      const isYou = currentUser && u.name === currentUser.name;
+      const invVal = (u.inventory||[]).reduce((s,item) => s+(item.price||0), 0);
+      return `<div class="top-row" ${isYou ? 'style="border-color:var(--accent);background:rgba(228,174,57,.05)"' : ''}>
+        <div class="top-rank ${rankClass(i)}">${i < 3 ? ranks[i] : '#'+(i+1)}</div>
+        <div>
+          <div class="top-name ${isYou?'top-name-you':''}">${escHtml(u.name)} ${isYou?'(Вы)':''} ${u.name==='PawPaw69'?'🛡️':''}</div>
+          <div style="font-size:11px;color:var(--text2)">Скинов: ${(u.inventory||[]).length} · Инв: $${invVal.toFixed(2)}</div>
+        </div>
+        <div>
+          <div class="top-val" style="color:var(--accent)">$${(u.balance||0).toFixed(2)}</div>
+          <div class="top-sub">баланс</div>
+        </div>
+      </div>`;
+    }).join('') +
+  '</div>';
+}
+
+function renderTopInventory(users) {
+  const el = document.getElementById('topContent');
+  const withVal = users.map(u => {
+    const invVal = (u.inventory||[]).reduce((s,i) => s+(i.price||0), 0);
+    return { ...u, invVal };
+  }).sort((a,b) => b.invVal - a.invVal);
+  if(!withVal.length) { el.innerHTML = '<div class="top-empty">Нет игроков</div>'; return; }
+  const ranks = ['🥇','🥈','🥉'];
+  const rankClass = i => i===0?'top-rank-1':i===1?'top-rank-2':i===2?'top-rank-3':'top-rank-n';
+  el.innerHTML = '<div class="top-list">' +
+    withVal.map((u, i) => {
+      const isYou = currentUser && u.name === currentUser.name;
+      // Most expensive skin
+      const topSkin = (u.inventory||[]).slice().sort((a,b)=>(b.price||0)-(a.price||0))[0];
+      return `<div class="top-row" ${isYou ? 'style="border-color:var(--accent);background:rgba(228,174,57,.05)"' : ''}>
+        <div class="top-rank ${rankClass(i)}">${i < 3 ? ranks[i] : '#'+(i+1)}</div>
+        <div style="flex:1">
+          <div class="top-name ${isYou?'top-name-you':''}">${escHtml(u.name)} ${isYou?'(Вы)':''}</div>
+          <div style="font-size:11px;color:var(--text2)">Предметов: ${(u.inventory||[]).length}${topSkin?` · Топ: ${escHtml(topSkin.skin)} $${topSkin.price.toFixed(2)}`:''}</div>
+        </div>
+        <div>
+          <div class="top-val" style="color:var(--rc-gold)">$${u.invVal.toFixed(2)}</div>
+          <div class="top-sub">инвентарь</div>
+        </div>
+      </div>`;
+    }).join('') +
+  '</div>';
+}
+
+async function renderTopDrops() {
+  const el = document.getElementById('topContent');
+  let drops = [];
+
+  if(useFirebase && fbDropsRef) {
+    try {
+      const snap = await fbDropsRef.limitToLast(50).once('value');
+      snap.forEach(c => drops.push(c.val()));
+      drops.reverse(); // newest first
+    } catch(e) { console.warn('Top drops FB err', e); }
+  }
+
+  // Fallback to localStorage
+  if(!drops.length) {
+    try { drops = JSON.parse(localStorage.getItem('cs2drops') || '[]'); } catch(e){}
+  }
+
+  if(!drops.length) { el.innerHTML = '<div class="top-empty">Дропов пока нет.<br>Открой кейс!</div>'; return; }
+
+  const rcColors = {
+    consumer:'#b0c3d9', industrial:'#5e98d9', milspec:'#4b69ff',
+    restricted:'#8847ff', classified:'#d32ce6', covert:'#eb4b4b', gold:'#e4ae39'
+  };
+
+  el.innerHTML = drops.map(d => {
+    const c = rcColors[d.rarity] || '#888';
+    const isYou = currentUser && d.user === currentUser.name;
+    return `<div class="top-drop-item" ${isYou ? 'style="border-color:var(--accent)"' : ''}>
+      <div class="tdi-rarity" style="background:${c}"></div>
+      <div class="tdi-info">
+        <div class="tdi-user ${isYou?'':''}">👤 ${escHtml(d.user)} ${isYou?'(Вы)':''}</div>
+        <div class="tdi-skin">${escHtml(d.weapon)} | ${escHtml(d.name)}</div>
+        <div class="tdi-wear" style="color:${c}">${d.rarity?.toUpperCase()||''} ${d.wear?'· '+d.wear:''}</div>
+      </div>
+      <div>
+        <div class="tdi-price" style="color:${c}">$${(+d.price||0).toFixed(2)}</div>
+        <div class="tdi-time">${d.ts ? formatTimeAgo(d.ts) + ' назад' : ''}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
 
 // ═══════════════════════════════════════
 //  CRASH
